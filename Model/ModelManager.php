@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
 
 use ModelCriteria;
+use BaseObject;
 use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
 
 /**
@@ -47,33 +48,33 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @param $object
+     * @param BaseObject $object
      *
      * @return void
      */
     public function create($object)
     {
-        // TODO: Implement create() method.
+        $object->save();
     }
 
     /**
-     * @param object $object
+     * @param BaseObject $object
      *
      * @return void
      */
     public function update($object)
     {
-        // TODO: Implement update() method.
+        $object->save();
     }
 
     /**
-     * @param object $object
+     * @param BaseObject $object
      *
      * @return void
      */
     public function delete($object)
     {
-        // TODO: Implement delete() method.
+        $object->delete();
     }
 
     /**
@@ -99,14 +100,18 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @param $class
-     * @param $id
+     * @param string $class
+     * @param int $id
      *
-     * @return void
+     * @return BaseObject
      */
     public function find($class, $id)
     {
-        // TODO: Implement find() method.
+        $queryClass = $class.'Query';
+
+        return $queryClass::create()
+            ->findPk($id)
+        ;
     }
 
     /**
@@ -158,13 +163,24 @@ class ModelManager implements ModelManagerInterface
      *
      * @param object $model
      *
-     * @return mixed
+     * @return array|null
      */
     public function getIdentifierValues($model)
     {
-        // TODO: Implement getIdentifierValues() method.
+        if ($model instanceof BaseObject && method_exists($model, 'getPrimaryKeys')) {
+            return $model->getPrimaryKeys();
+        }
 
-        return array();
+        if ($model instanceof \Persistent) {
+            return $model->getPrimaryKey();
+        }
+
+        // readonly="true" models
+        if ($model instanceof BaseObject && method_exists($model, 'getPrimaryKey')) {
+            return $model->getPrimaryKey();
+        }
+
+        return null;
     }
 
     /**
@@ -180,23 +196,27 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @param $entity
+     * @param BaseObject|null $model
+     *
+     * @return array|null
      */
-    public function getNormalizedIdentifier($entity)
+    public function getNormalizedIdentifier($model)
     {
-        // TODO: Implement getNormalizedIdentifier() method.
+        if ($model instanceof BaseObject || $model instanceof Persistent) {
+            return $this->getIdentifierValues($model);
+        }
 
-        return $entity->getId();
+        return null;
     }
 
     /**
      * @param string $class
      *
-     * @return void
+     * @return BaseObject
      */
     public function getModelInstance($class)
     {
-        // TODO: Implement getModelInstance() method.
+        return new $class;
     }
 
     /**
