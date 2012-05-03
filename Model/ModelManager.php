@@ -115,14 +115,14 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
      *
      * @return void
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
-        // TODO: Implement batchDelete() method.
+        $queryProxy->delete();
     }
 
     /**
@@ -154,9 +154,9 @@ class ModelManager implements ModelManagerInterface
      */
     public function getModelIdentifier($class)
     {
-        // TODO: Implement getModelIdentifier() method.
+        // TODO: Retrieve correct PK column
 
-        return 'id';
+        return 'Id';
     }
 
     /**
@@ -380,6 +380,20 @@ class ModelManager implements ModelManagerInterface
         // TODO: Implement getPaginationParameters() method.
 
         return array();
+    }
+
+    /**
+     * @param string $class
+     * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
+     * @param integer[] $idx
+     *
+     * @return void
+     */
+    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, $idx)
+    {
+        // TODO: Add support for related classes
+
+        $query->filterBy($this->getModelIdentifier($class), $idx, \Criteria::IN);
     }
 
     /**
