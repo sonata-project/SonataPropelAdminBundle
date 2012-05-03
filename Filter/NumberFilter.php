@@ -12,6 +12,7 @@
 namespace Sonata\PropelAdminBundle\Filter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 
 use ModelCriteria;
 
@@ -20,16 +21,6 @@ use ModelCriteria;
  */
 class NumberFilter extends AbstractFilter
 {
-    public function filter(ProxyQueryInterface $query, $alias, $field, $value)
-    {
-        parent::filter($query, $alias, $field, $value);
-    }
-
-    public function apply($query, $value)
-    {
-        // TODO: Implement apply() method.
-    }
-
     /**
      * @return array
      */
@@ -40,5 +31,16 @@ class NumberFilter extends AbstractFilter
             'field_options' => $this->getFieldOptions(),
             'label' => $this->getLabel(),
         ));
+    }
+
+    protected function getCriteriaMap()
+    {
+        return array(
+            NumberType::TYPE_GREATER_EQUAL => ModelCriteria::GREATER_EQUAL,
+            NumberType::TYPE_GREATER_THAN => ModelCriteria::GREATER_THAN,
+            NumberType::TYPE_EQUAL => ModelCriteria::EQUAL,
+            NumberType::TYPE_LESS_EQUAL => ModelCriteria::LESS_EQUAL,
+            NumberType::TYPE_LESS_THAN => ModelCriteria::LESS_THAN,
+        );
     }
 }

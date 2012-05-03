@@ -35,8 +35,29 @@ abstract class AbstractFilter extends Filter
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
+        $map = $this->getCriteriaMap();
+
+        /* @var $query ModelCriteria */
+        $query->filterBy($field, sprintf($this->getOption('format', '%s'), $value['value']), $map[$value['type']]);
+    }
+
+    public function apply($query, $value)
+    {
         if (!$query instanceof ProxyQuery) {
             throw new \RuntimeException('The given query is not supported by this filter.');
+        }
+
+        $this->setValue($value);
+
+        /* @var $query ModelCriteria */
+        if ($this->isActive()) {
+            $column = call_user_func_array(array($query->getModelPeerName(), 'translateFieldName'), array(
+                $this->getFieldName(),
+                \BasePeer::TYPE_STUDLYPHPNAME,
+                \BasePeer::TYPE_PHPNAME,
+            ));
+
+            $this->filter($query, '', $column, $this->getValue());
         }
     }
 
@@ -47,4 +68,11 @@ abstract class AbstractFilter extends Filter
     {
         return array();
     }
+
+    /**
+     * Return the mapping between the selected filter type and the criteria comparison.
+     *
+     * @return array
+     */
+    abstract protected function getCriteriaMap();
 }

@@ -12,6 +12,7 @@
 namespace Sonata\PropelAdminBundle\Filter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 use ModelCriteria;
 
@@ -20,14 +21,23 @@ use ModelCriteria;
  */
 class StringFilter extends AbstractFilter
 {
+    /**
+     * Apply the filter to the ModelCriteria instance
+     *
+     * @param ProxyQueryInterface $query
+     * @param string $alias
+     * @param string $field
+     * @param string $value
+     *
+     * @return void
+     */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
-        parent::filter($query, $alias, $field, $value);
-    }
+        if (ChoiceType::TYPE_EQUAL === $value['type']) {
+            $this->setOption('format', '%s');
+        }
 
-    public function apply($query, $value)
-    {
-        // TODO: Implement apply() method.
+        parent::filter($query, $alias, $field, $value);
     }
 
     /**
@@ -40,5 +50,21 @@ class StringFilter extends AbstractFilter
             'field_options' => $this->getFieldOptions(),
             'label' => $this->getLabel(),
         ));
+    }
+
+    public function getDefaultOptions()
+    {
+        return array(
+            'format' => '%%%s%%',
+        );
+    }
+
+    protected function getCriteriaMap()
+    {
+        return array(
+            ChoiceType::TYPE_CONTAINS => ModelCriteria::LIKE,
+            ChoiceType::TYPE_NOT_CONTAINS => ModelCriteria::NOT_LIKE,
+            ChoiceType::TYPE_EQUAL => ModelCriteria::EQUAL,
+        );
     }
 }
