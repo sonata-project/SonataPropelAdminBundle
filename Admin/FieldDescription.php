@@ -72,4 +72,30 @@ class FieldDescription extends BaseFieldDescription
 
         return isset($this->fieldMapping['id']) ? $this->fieldMapping['id'] : false;
     }
+
+    /**
+     * set the parent association mappings information
+     *
+     * @param array $parentAssociationMappings
+     *
+     * @return void
+     */
+    public function setParentAssociationMappings(array $parentAssociationMappings)
+    {
+        // TODO: Implement setParentAssociationMappings() method.
+    }
+
+    /**
+     * return the value linked to the description
+     *
+     * @todo Add handling of related values.
+     *
+     * @param  $object
+     *
+     * @return bool|mixed
+     */
+    public function getValue($object)
+    {
+        return $this->getFieldValue($object, $this->getFieldName());
+    }
 }

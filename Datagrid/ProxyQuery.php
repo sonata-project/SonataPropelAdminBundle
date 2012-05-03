@@ -86,9 +86,9 @@ class ProxyQuery implements ProxyQueryInterface
         return $this->query->count();
     }
 
-    public function setSortBy($sortBy)
+    public function setSortBy($parentAssociationMappings, $fieldMapping)
     {
-        $this->sortBy = $sortBy;
+        $this->sortBy = array($parentAssociationMappings, $fieldMapping);
 
         return $this;
     }
@@ -137,5 +137,23 @@ class ProxyQuery implements ProxyQueryInterface
     public function __clone()
     {
         $this->query = clone $this->query;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUniqueParameterId()
+    {
+        // TODO: Implement getUniqueParameterId() method.
+    }
+
+    /**
+     * @param array $associationMappings
+     *
+     * @return mixed
+     */
+    public function entityJoin(array $associationMappings)
+    {
+        // TODO: Implement entityJoin() method.
     }
 }
