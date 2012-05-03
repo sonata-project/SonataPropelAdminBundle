@@ -17,3 +17,4 @@ services:
         class: Sonata\PropelAdminBundle\Builder\DatagridBuilder
         arguments:
             - '@form.factory'
+            - '@sonata.admin.builder.filter.factory'

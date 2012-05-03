@@ -1,0 +1,10 @@
+services:
+    sonata.admin.propel.filter.type.string:
+        class: Sonata\PropelAdminBundle\Filter\StringFilter
+        tags:
+            - { name: 'sonata.admin.filter.type', alias: 'string' }
+
+    sonata.admin.propel.filter.type.number:
+        class: Sonata\PropelAdminBundle\Filter\NumberFilter
+        tags:
+            - { name: 'sonata.admin.filter.type', alias: 'integer' }

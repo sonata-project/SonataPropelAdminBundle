@@ -23,7 +23,18 @@ class SonataPropelAdminExtension extends Extension
 {
     public function load(array $config, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader = new YamlFileLoader($container, new FileLocator(array(
+            __DIR__.'/../Resources/config/services',
+            __DIR__.'/../Resources/config',
+        )));
+
+        $files = array(
+            'filter_types.yml',
+            'services.yml',
+        );
+
+        foreach ($files as $eachFile) {
+            $loader->load($eachFile);
+        }
     }
 }
