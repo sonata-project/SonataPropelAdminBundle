@@ -395,28 +395,4 @@ class ModelManager implements ModelManagerInterface
 
         $query->filterBy($this->getModelIdentifier($class), $idx, \Criteria::IN);
     }
-
-    /**
-     * Returns true if the model has a relation
-     *
-     * @param string $name
-     *
-     * @return boolean
-     */
-    public function hasMetadata($name)
-    {
-        return false;
-    }
-
-    /**
-     * @throws \RuntimeException
-     *
-     * @param string $name
-     *
-     * @return void
-     */
-    public function getMetadata($name)
-    {
-        throw new \RuntimeException('This ModelManager does not provide MetaData handling.');
-    }
 }
