@@ -53,7 +53,7 @@ abstract class AbstractFilter extends Filter
         if ($this->isActive()) {
             $column = call_user_func_array(array($query->getModelPeerName(), 'translateFieldName'), array(
                 $this->getFieldName(),
-                \BasePeer::TYPE_STUDLYPHPNAME,
+                \BasePeer::TYPE_FIELDNAME,
                 \BasePeer::TYPE_PHPNAME,
             ));
 

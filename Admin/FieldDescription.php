@@ -14,11 +14,69 @@ namespace Sonata\PropelAdminBundle\Admin;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
+use PropelColumnTypes;
+
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class FieldDescription extends BaseFieldDescription
 {
+    /**
+     * A mapping between PropelColumnTypes and field types.
+     *
+     * This mapping is data type based, it does not account foreign keys or such.
+     *
+     * @todo Finish this list and add their respective filters.
+     * @todo What about the binary fields, does it make sense to search within binary data?
+     *
+     * @var array
+     */
+    static protected $typeMap = array(
+        // integer
+        PropelColumnTypes::INTEGER => 'propel_number',
+        PropelColumnTypes::BIGINT => 'propel_number',
+        PropelColumnTypes::SMALLINT => 'propel_number',
+        PropelColumnTypes::TINYINT => 'propel_number',
+
+        // double
+        PropelColumnTypes::NUMERIC => 'propel_number',
+        PropelColumnTypes::DECIMAL => 'propel_number',
+        PropelColumnTypes::REAL => 'propel_number',
+        PropelColumnTypes::FLOAT => 'propel_number',
+        PropelColumnTypes::DOUBLE => 'propel_number',
+
+        // string
+        PropelColumnTypes::CHAR => 'propel_string',
+        PropelColumnTypes::VARCHAR => 'propel_string',
+        PropelColumnTypes::LONGVARCHAR => 'propel_string',
+
+        // blob and binary
+        PropelColumnTypes::CLOB => 'propel_string',
+        PropelColumnTypes::CLOB_EMU => 'propel_string',
+        PropelColumnTypes::BLOB => 'propel_string',
+        PropelColumnTypes::BINARY => 'propel_string',
+        PropelColumnTypes::VARBINARY => 'propel_string',
+        PropelColumnTypes::LONGVARBINARY => 'propel_string',
+    );
+
+    /**
+     * Set the type of this field.
+     *
+     * Transforms PropelColumnTypes based on the type map.
+     *
+     * @see self::$typeMap
+     *
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        if (isset(static::$typeMap[$type])) {
+            $type = static::$typeMap[$type];
+        }
+
+        parent::setType($type);
+    }
+
     /**
      * Define the association mapping definition
      *

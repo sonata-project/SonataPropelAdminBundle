@@ -11,18 +11,20 @@
 
 namespace Sonata\PropelAdminBundle\Model;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
-
-use ModelCriteria;
-use BaseObject;
 use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
+
+use BaseObject;
+use BasePeer;
+use ModelCriteria;
+use Persistent;
+use PropelException;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -30,19 +32,45 @@ use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
 class ModelManager implements ModelManagerInterface
 {
     /**
-     * Returns a new FieldDescription
+     * Returns a new FieldDescription.
      *
-     * @param string $class
-     * @param string $name
-     * @param array $options
+     * The description is filled with the information retrieved from
+     * * the respective Peer-class and
+     * * the TableMap of the model class.
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
+     * @param string $class   The FQCN of the model.
+     * @param string $name    The column name of the model.
+     * @param array  $options A list of options to be passed to the new FielDescription.
+     *
+     * @return FieldDescription
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = array())
     {
         $fieldDescription = new FieldDescription();
         $fieldDescription->setName($name);
         $fieldDescription->setOptions($options);
+
+        // resolve PEER class
+        $peer = constant($class.'::PEER');
+        try {
+            $columnName = call_user_func_array(array($peer, 'translateFieldName'), array(
+                $fieldDescription->getName(),
+                BasePeer::TYPE_FIELDNAME,
+                BasePeer::TYPE_PHPNAME,
+            ));
+        } catch (PropelException $e) {
+            // The name may not be a column of the model, but an action field or similar.
+
+            // TODO: Figure out how to distinguish between those "special" fields and wrong ones.
+
+            return $fieldDescription;
+        }
+
+        /* @var $tableMap \TableMap */
+        $tableMap = call_user_func(array($peer, 'getTableMap'));
+        $column = $tableMap->getColumnByPhpName($columnName);
+
+        $fieldDescription->setType($column->getType());
 
         return $fieldDescription;
     }
@@ -148,30 +176,32 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
+     * @todo Add handling of multi-column primary keys.
+     *
      * @param string $class
      *
-     * @return string
+     * @return string|null
      */
     public function getModelIdentifier($class)
     {
-        // TODO: Retrieve correct PK column
+        $fieldNames = $this->getIdentifierFieldNames($class);
 
-        return 'Id';
+        if (1 === count($fieldNames)) {
+            return $fieldNames[0];
+        }
+
+        return null;
     }
 
     /**
      *
-     * @param object $model
+     * @param BaseObject|Persistent $model
      *
      * @return array|null
      */
     public function getIdentifierValues($model)
     {
-        if ($model instanceof BaseObject && method_exists($model, 'getPrimaryKeys')) {
-            return $model->getPrimaryKeys();
-        }
-
-        if ($model instanceof \Persistent) {
+        if ($model instanceof Persistent) {
             return $model->getPrimaryKey();
         }
 
@@ -184,15 +214,32 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @param string $class
+     * Return a list of all field names that qualify to be an identifier.
      *
-     * @return array
+     * The list will contain:
+     * * any single-column primary key
+     * * any single-column unique index
+     * * any auto_increment column
+     *
+     * @todo Add retrieving of described identifiers other than simple PK.
+     *
+     * @param string $class The FQCN of the model.
+     *
+     * @return string[]
      */
     public function getIdentifierFieldNames($class)
     {
-        // TODO: Implement getIdentifierFieldNames() method.
+        $fieldNames = array();
 
-        return array();
+        $peer = constant($class.'::PEER');
+
+        /* @var $tableMap \TableMap */
+        $tableMap = call_user_func(array($peer, 'getTableMap'));
+        foreach ($tableMap->getPrimaryKeys() as $eachColumn) {
+            $fieldNames[] = $eachColumn->getPhpName();
+        }
+
+        return $fieldNames;
     }
 
     /**
@@ -307,7 +354,7 @@ class ModelManager implements ModelManagerInterface
     {
         return array(
             '_sort_order' => 'ASC',
-            '_sort_by' => $this->getModelIdentifier($class),
+            '_sort_by' => null,
             '_page' => 1,
         );
     }
@@ -383,16 +430,19 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
+     * @todo Add support for related classes.
+     * @todo Add support for multi-column primary key.
+     *
      * @param string $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
-     * @param integer[] $idx
+     * @param array $idx
      *
      * @return void
      */
-    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, $idx)
+    public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx)
     {
-        // TODO: Add support for related classes
-
-        $query->filterBy($this->getModelIdentifier($class), $idx, \Criteria::IN);
+        if (null !== $column = $this->getModelIdentifier($class)) {
+            $query->filterBy($column, $idx, \Criteria::IN);
+        }
     }
 }
