@@ -1,0 +1,25 @@
+{
+    "name": "sonata-project/propel-admin-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony Sonata / Integrate Propel into the SonataAdminBundle",
+    "keywords": ["Admin Generator", "admin", "sonata", "bootstrap", "generator"],
+    "homepage": "http://sonata-project.org/bundles/admin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sonata Community",
+            "homepage": "https://github.com/sonata-project/SonataPropelAdminBundle/contributors"
+        }
+    ],
+    "require": {
+        "propel/propel1": ">=1.6,<2.0",
+        "sonata-project/admin-bundle": "2.2.*@dev",
+        "sonata-project/block-bundle": "2.2.*@dev",
+        "symfony/symfony": ">=2.2,<2.3",
+        "knplabs/knp-menu-bundle": "1.1.x-dev"
+    },
+    "autoload": {
+        "psr-0": { "Sonata\\PropelAdminBundle": "" }
+    },
+    "target-dir": "Sonata/PropelAdminBundle"
+}

@@ -150,7 +150,11 @@ class ModelManager implements ModelManagerInterface
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
-        $queryProxy->delete();
+        if (count($queryProxy->getQuery()->getMap()) == 0) {
+            $queryProxy->deleteAll();
+        } else {
+            $queryProxy->delete();
+        }
     }
 
     /**
@@ -444,5 +448,16 @@ class ModelManager implements ModelManagerInterface
         if (null !== $column = $this->getModelIdentifier($class)) {
             $query->filterBy($column, $idx, \Criteria::IN);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * The ORM implementation does nothing special but you still should use
+     * this method when using the id in a URL to allow for future improvements.
+     */
+    public function getUrlsafeIdentifier($entity)
+    {
+        return $this->getNormalizedIdentifier($entity);
     }
 }
