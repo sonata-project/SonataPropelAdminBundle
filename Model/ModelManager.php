@@ -150,7 +150,11 @@ class ModelManager implements ModelManagerInterface
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
-        $queryProxy->delete();
+        if (count($queryProxy->getQuery()->getMap()) == 0) {
+            $queryProxy->deleteAll();
+        } else {
+            $queryProxy->delete();
+        }
     }
 
     /**

@@ -156,4 +156,12 @@ class ProxyQuery implements ProxyQueryInterface
     {
         // TODO: Implement entityJoin() method.
     }
+
+    /**
+     * @return \ModelCriteria
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
 }
