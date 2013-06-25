@@ -14,23 +14,25 @@ namespace Sonata\PropelAdminBundle\Model;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
 use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
 
 use BaseObject;
-use BasePeer;
 use ModelCriteria;
 use Persistent;
-use PropelException;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class ModelManager implements ModelManagerInterface
 {
+    /**
+     * @var array
+     */
+    private $cache = array();
+
     /**
      * Returns a new FieldDescription.
      *
@@ -50,25 +52,31 @@ class ModelManager implements ModelManagerInterface
         $fieldDescription->setName($name);
         $fieldDescription->setOptions($options);
 
-        // resolve PEER class
-        $peer = constant($class.'::PEER');
-        try {
-            $columnName = call_user_func_array(array($peer, 'translateFieldName'), array(
-                $fieldDescription->getName(),
-                BasePeer::TYPE_FIELDNAME,
-                BasePeer::TYPE_PHPNAME,
-            ));
-        } catch (PropelException $e) {
-            // The name may not be a column of the model, but an action field or similar.
-
-            // TODO: Figure out how to distinguish between those "special" fields and wrong ones.
-
+        if (!$table = $this->getTable($class)) {
             return $fieldDescription;
         }
 
-        /* @var $tableMap \TableMap */
-        $tableMap = call_user_func(array($peer, 'getTableMap'));
-        $column = $tableMap->getColumnByPhpName($columnName);
+        foreach ($table->getRelations() as $relation) {
+            if (in_array($relation->getType(), array(\RelationMap::MANY_TO_ONE, \RelationMap::ONE_TO_MANY))) {
+                if ($name == $relation->getForeignTable()->getName()) {
+                    $fieldDescription->setAssociationMapping(array(
+                        'targetEntity' => $relation->getForeignTable()->getClassName(),
+                        'type' => $relation->getType()
+                    ));
+                }
+            } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
+                if (strtolower($name) == strtolower($relation->getPluralName())) {
+                    $fieldDescription->setAssociationMapping(array(
+                        'targetEntity' => $relation->getLocalTable()->getClassName(),
+                        'type' => $relation->getType()
+                    ));
+                }
+            }
+        }
+
+        if (!$column = $this->getColumn($class, $name)) {
+            return $fieldDescription;
+        }
 
         $fieldDescription->setType($column->getType());
 
@@ -137,9 +145,7 @@ class ModelManager implements ModelManagerInterface
     {
         $queryClass = $class.'Query';
 
-        return $queryClass::create()
-            ->findPk($id)
-        ;
+        return $queryClass::create()->findPk($id);
     }
 
     /**
@@ -160,12 +166,10 @@ class ModelManager implements ModelManagerInterface
     /**
      * @param  $parentAssociationMapping
      * @param  $class
-     *
-     * @return void
      */
     public function getParentFieldDescription($parentAssociationMapping, $class)
     {
-        // TODO: Implement getParentFieldDescription() method.
+        throw new \LogicException("TODO : Implement getParentFieldDescription() method.");
     }
 
     /**
@@ -459,5 +463,42 @@ class ModelManager implements ModelManagerInterface
     public function getUrlsafeIdentifier($entity)
     {
         return $this->getNormalizedIdentifier($entity);
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return \TableMap
+     */
+    protected function getTable($class)
+    {
+        if (isset($this->cache[$class])) {
+            return $this->cache[$class];
+        }
+
+        if (class_exists($queryClass = $class.'Query')) {
+            $query = new $queryClass();
+
+            return $this->cache[$class] = $query->getTableMap();
+        }
+    }
+
+    /**
+     * @param string $class
+     * @param string $property
+     *
+     * @return \ColumnMap
+     */
+    protected function getColumn($class, $property)
+    {
+        if (isset($this->cache[$class.'::'.$property])) {
+            return $this->cache[$class.'::'.$property];
+        }
+
+        $table = $this->getTable($class);
+
+        if ($table && $table->hasColumn($property)) {
+            return $this->cache[$class.'::'.$property] = $table->getColumn($property);
+        }
     }
 }
