@@ -81,12 +81,17 @@ class FieldDescription extends BaseFieldDescription
      * Define the association mapping definition
      *
      * @param array $associationMapping
-     *
-     * @return void
      */
     public function setAssociationMapping($associationMapping)
     {
-        // TODO: Implement setAssociationMapping() method.
+        if (!is_array($associationMapping)) {
+            throw new \RuntimeException('The association mapping must be an array');
+        }
+
+        $this->associationMapping = $associationMapping;
+
+        $this->type        = $this->type ? : $associationMapping['type'];
+        $this->mappingType = $this->mappingType ? : $associationMapping['type'];
     }
 
     /**
@@ -96,7 +101,9 @@ class FieldDescription extends BaseFieldDescription
      */
     public function getTargetEntity()
     {
-        // TODO: Implement getTargetEntity() method.
+        if ($this->associationMapping) {
+            return $this->associationMapping['targetEntity'];
+        }
 
         return null;
     }
@@ -110,13 +117,14 @@ class FieldDescription extends BaseFieldDescription
      */
     public function setFieldMapping($fieldMapping)
     {
-        // TODO: Implement setFieldMapping() method.
+        if (!is_array($fieldMapping)) {
+            throw new \RuntimeException('The field mapping must be an array');
+        }
 
         $this->fieldMapping = $fieldMapping;
 
-        $this->type = $fieldMapping['type'];
-        $this->mappingType = $fieldMapping['type'];
-        $this->fieldName = $fieldMapping['fieldName'];
+        $this->type        = $this->type ? : $fieldMapping['type'];
+        $this->mappingType = $this->mappingType ? : $fieldMapping['type'];
     }
 
     /**
@@ -126,8 +134,6 @@ class FieldDescription extends BaseFieldDescription
      */
     public function isIdentifier()
     {
-        // TODO: Implement isIdentifier() method.
-
         return isset($this->fieldMapping['id']) ? $this->fieldMapping['id'] : false;
     }
 
@@ -135,18 +141,20 @@ class FieldDescription extends BaseFieldDescription
      * set the parent association mappings information
      *
      * @param array $parentAssociationMappings
-     *
-     * @return void
      */
     public function setParentAssociationMappings(array $parentAssociationMappings)
     {
-        // TODO: Implement setParentAssociationMappings() method.
+        foreach ($parentAssociationMappings as $parentAssociationMapping) {
+            if (!is_array($parentAssociationMapping)) {
+                throw new \RuntimeException('An association mapping must be an array');
+            }
+        }
+
+        $this->parentAssociationMappings = $parentAssociationMappings;
     }
 
     /**
      * return the value linked to the description
-     *
-     * @todo Add handling of related values.
      *
      * @param  $object
      *
