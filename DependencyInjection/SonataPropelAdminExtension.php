@@ -12,7 +12,7 @@
 namespace Sonata\PropelAdminBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
@@ -23,18 +23,9 @@ class SonataPropelAdminExtension extends Extension
 {
     public function load(array $config, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(array(
-            __DIR__.'/../Resources/config/services',
-            __DIR__.'/../Resources/config',
-        )));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $files = array(
-            'filter_types.yml',
-            'services.yml',
-        );
-
-        foreach ($files as $eachFile) {
-            $loader->load($eachFile);
-        }
+        $loader->load('propel.xml');
+        $loader->load('filter_types.xml');
     }
 }
