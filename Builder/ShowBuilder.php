@@ -14,15 +14,29 @@ namespace Sonata\PropelAdminBundle\Builder;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 
+use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
+        
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class ShowBuilder implements ShowBuilderInterface
 {
+    /**
+     * @var TypeGuesserInterface
+     */
+    protected $guesser;
+
+    /**
+     * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface $guesser
+     */
+    public function __construct(TypeGuesserInterface $guesser)
+    {
+        $this->guesser   = $guesser;
+    }
+    
     /**
      * @param array $options
      *
@@ -43,7 +57,17 @@ class ShowBuilder implements ShowBuilderInterface
      */
     public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
-        // TODO: Implement addField() method.
+        if ($type == null) {
+            $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName(), $admin->getModelManager());
+            $fieldDescription->setType($guessType->getType());
+        } else {
+            $fieldDescription->setType($type);
+        }
+
+        $this->fixFieldDescription($admin, $fieldDescription);
+        $admin->addShowFieldDescription($fieldDescription->getName(), $fieldDescription);
+
+        $list->add($fieldDescription);
     }
 
     /**
@@ -54,6 +78,6 @@ class ShowBuilder implements ShowBuilderInterface
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
-        // TODO: Implement fixFieldDescription() method.
+        $fieldDescription->setAdmin($admin);
     }
 }

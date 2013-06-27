@@ -14,10 +14,10 @@ namespace Sonata\PropelAdminBundle\Builder;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
+use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 
 use Sonata\PropelAdminBundle\Datagrid\Pager;
 use Sonata\PropelAdminBundle\Datagrid\Datagrid;
@@ -40,22 +40,25 @@ class DatagridBuilder implements DatagridBuilderInterface
     protected $filterFactory;
 
     /**
-     * Constructor.
-     *
-     * @param FormFactory $formFactory
-     * @param FilterFactoryInterface $filterFactory
+     * @var TypeGuesserInterface
      */
-    public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory)
+    protected $guesser;
+
+    /**
+     * @param \Symfony\Component\Form\FormFactory               $formFactory
+     * @param \Sonata\AdminBundle\Filter\FilterFactoryInterface $filterFactory
+     * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface  $guesser
+     */
+    public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser)
     {
         $this->formFactory = $formFactory;
         $this->filterFactory = $filterFactory;
+        $this->guesser = $guesser;
     }
 
     /**
      * @param AdminInterface $admin
      * @param FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
@@ -70,26 +73,32 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @param string $type
      * @param FieldDescriptionInterface $fieldDescription
      * @param AdminInterface $admin
-     *
-     * @return \Sonata\AdminBundle\Filter\FilterInterface
      */
     public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
-        if (!$type) {
-            $type = $fieldDescription->getType();
+        if ($type == null) {
+            $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName(), $admin->getModelManager());
+
+            $type = $guessType->getType();
+
+            $fieldDescription->setType($type);
+
+            $fieldDescription->mergeOption('field_options', $guessType->getOptions());
+        } else {
+            $fieldDescription->setType($type);
         }
 
         $this->fixFieldDescription($admin, $fieldDescription);
 
         $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
 
-        /* @var $filter \Sonata\AdminBundle\Filter\FilterInterface */
+        $fieldDescription->mergeOption('field_options', array('required' => false));
         $filter = $this->filterFactory->create($fieldDescription->getName(), $type, $fieldDescription->getOptions());
         if (!$filter->getLabel()) {
             $filter->setLabel($admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'filter', 'label'));
         }
 
-        return $datagrid->addFilter($filter);
+        $datagrid->addFilter($filter);
     }
 
     /**

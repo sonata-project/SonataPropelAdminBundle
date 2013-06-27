@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="sonata.admin.manager.propel" class="Sonata\PropelAdminBundle\Model\ModelManager" />
+
+        <!-- FormBuilder -->
+        <service id="sonata.admin.builder.propel_form" class="Sonata\PropelAdminBundle\Builder\FormContractor">
+            <argument type="service" id="form.factory" />
+        </service>
+
+        <!-- ListBuilder -->
+        <service id="sonata.admin.builder.propel_list" class="Sonata\PropelAdminBundle\Builder\ListBuilder" >
+            <argument type="service" id="sonata.admin.guesser.propel_list_chain" />
+            <argument />
+        </service>
+
+        <service id="sonata.admin.guesser.propel_list" class="Sonata\PropelAdminBundle\Guesser\TypeGuesser">
+            <tag name="sonata.admin.guesser.propel_list" />
+        </service>
+
+        <service id="sonata.admin.guesser.propel_list_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
+            <argument />
+        </service>
+
+        <!-- ShowBuilder  -->
+        <service id="sonata.admin.builder.propel_show" class="Sonata\PropelAdminBundle\Builder\ShowBuilder" >
+            <argument type="service" id="sonata.admin.guesser.propel_show_chain" />
+            <argument />
+        </service>
+
+        <service id="sonata.admin.guesser.propel_show" class="Sonata\PropelAdminBundle\Guesser\TypeGuesser">
+            <tag name="sonata.admin.guesser.propel_show" />
+        </service>
+
+        <service id="sonata.admin.guesser.propel_show_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
+            <argument />
+        </service>
+
+        <!-- DatagridBuilder -->
+        <service id="sonata.admin.builder.propel_datagrid" class="Sonata\PropelAdminBundle\Builder\DatagridBuilder">
+            <argument type="service" id="form.factory" />
+            <argument type="service" id="sonata.admin.builder.filter.factory" />
+            <argument type="service" id="sonata.admin.guesser.propel_datagrid_chain" />
+        </service>
+
+        <service id="sonata.admin.guesser.propel_datagrid" class="Sonata\PropelAdminBundle\Guesser\FilterTypeGuesser">
+            <tag name="sonata.admin.guesser.propel_datagrid" />
+        </service>
+
+        <service id="sonata.admin.guesser.propel_datagrid_chain" class="Sonata\AdminBundle\Guesser\TypeGuesserChain">
+            <argument />
+        </service>
+    </services>
+</container>
