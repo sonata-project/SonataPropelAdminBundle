@@ -17,6 +17,107 @@ use Sonata\PropelAdminBundle\Admin\FieldDescription;
  */
 class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
 {
+    public function testAssociationMapping()
+    {
+        $field = new FieldDescription;
+        $field->setAssociationMapping(array(
+            'type' => 'integer',
+            'fieldName' => 'position'
+        ));
+
+        $this->assertEquals('integer', $field->getType());
+        $this->assertEquals('integer', $field->getMappingType());
+
+        // cannot overwrite defined definition
+        $field->setAssociationMapping(array(
+            'type' => 'overwrite?',
+            'fieldName' => 'overwritten'
+        ));
+
+        $this->assertEquals('integer', $field->getType());
+        $this->assertEquals('integer', $field->getMappingType());
+
+        $field->setMappingType('string');
+        $this->assertEquals('string', $field->getMappingType());
+        $this->assertEquals('integer', $field->getType());
+    }
+
+    public function testSetParentAssociationMappings()
+    {
+        $field = new FieldDescription();
+        $field->setParentAssociationMappings(array(array('test')));
+
+        $this->assertEquals(array(array('test')), $field->getParentAssociationMappings());
+    }
+
+    /**
+     * @expectedException        \RuntimeException
+     * @expectedExceptionMessage An association mapping must be an array
+     */
+    public function testSetParentAssociationMappingsAllowOnlyForArray()
+    {
+        $field = new FieldDescription();
+        $field->setParentAssociationMappings(array('test'));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testSetAssociationMappingAllowOnlyForArray()
+    {
+        $field = new FieldDescription();
+        $field->setAssociationMapping('test');
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testSetFieldMappingAllowOnlyForArray()
+    {
+        $field = new FieldDescription();
+        $field->setFieldMapping('test');
+    }
+
+    public function testSetFieldMappingSetType()
+    {
+        $fieldMapping = array(
+            'type'         => 'integer',
+        );
+
+        $field = new FieldDescription();
+        $field->setFieldMapping($fieldMapping);
+
+        $this->assertEquals('integer', $field->getType());
+    }
+
+    public function testSetFieldMappingSetMappingType()
+    {
+        $fieldMapping = array(
+            'type'         => 'integer',
+        );
+
+        $field = new FieldDescription();
+        $field->setFieldMapping($fieldMapping);
+
+        $this->assertEquals('integer', $field->getMappingType());
+    }
+
+    public function testGetTargetEntity()
+    {
+        $assocationMapping = array(
+            'type'         => 'integer',
+            'targetEntity' => 'someValue'
+        );
+
+        $field = new FieldDescription();
+
+        $this->assertNull($field->getTargetEntity());
+
+        $field->setAssociationMapping($assocationMapping);
+
+        $this->assertEquals('someValue', $field->getTargetEntity());
+    }
+
     public function testGetValue()
     {
         $mockedObject = $this->getMock('MockedTestObject', array('myMethod'));
@@ -43,5 +144,19 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $field = new FieldDescription();
 
         $this->assertEquals($field->getValue($mockedObject), 'myMethodValue');
+    }
+
+    public function testIsIdentifierFromFieldMapping()
+    {
+        $fieldMapping = array(
+            'type'      => 'integer',
+            'fieldName' => 'position',
+            'id'        => 'someId'
+        );
+
+        $field = new FieldDescription();
+        $field->setFieldMapping($fieldMapping);
+
+        $this->assertEquals('someId', $field->isIdentifier());
     }
 }
