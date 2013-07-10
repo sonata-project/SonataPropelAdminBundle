@@ -48,39 +48,42 @@ class ModelManager implements ModelManagerInterface
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = array())
     {
+        if (!is_string($name)) {
+            throw new \RunTimeException('The name argument must be a string');
+        }
+
         $fieldDescription = new FieldDescription();
         $fieldDescription->setName($name);
         $fieldDescription->setOptions($options);
-
-        if (!$table = $this->getTable($class)) {
-            return $fieldDescription;
-        }
-
-        foreach ($table->getRelations() as $relation) {
-            if (in_array($relation->getType(), array(\RelationMap::MANY_TO_ONE, \RelationMap::ONE_TO_MANY))) {
-                if ($name == $relation->getForeignTable()->getName()) {
-                    $fieldDescription->setAssociationMapping(array(
-                        'targetEntity' => $relation->getForeignTable()->getClassName(),
-                        'type' => $relation->getType()
-                    ));
-                }
-            } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
-                if (strtolower($name) == strtolower($relation->getPluralName())) {
-                    $fieldDescription->setAssociationMapping(array(
-                        'targetEntity' => $relation->getLocalTable()->getClassName(),
-                        'type' => $relation->getType()
-                    ));
-                }
-            }
-        }
+        $fieldDescription->setParentAssociationMappings($this->getParentAssociationMappings($class, $name));
 
         if (!$column = $this->getColumn($class, $name)) {
+        
             return $fieldDescription;
         }
 
         $fieldDescription->setType($column->getType());
 
         return $fieldDescription;
+    }
+
+    /**
+     * @param type $fieldDescription
+     * @param type $class
+     */
+    public function getParentAssociationMappings($baseClass, $propertyFullName)
+    {
+        $nameElements = explode('.', $propertyFullName);
+        array_pop($nameElements);
+        $parentAssociationMappings = array();
+
+        foreach ($nameElements as $nameElement) {
+            $parentAssociationMappings[] = array(
+                'fieldName' => $nameElement
+            );
+        }
+
+        return $parentAssociationMappings;
     }
 
     /**
@@ -169,7 +172,17 @@ class ModelManager implements ModelManagerInterface
      */
     public function getParentFieldDescription($parentAssociationMapping, $class)
     {
-        throw new \LogicException("TODO : Implement getParentFieldDescription() method.");
+        $fieldName = $parentAssociationMapping['fieldName'];
+
+        $metadata = $this->getMetadata($class);
+
+        $associatingMapping = $metadata->associationMappings[$parentAssociationMapping];
+
+        $fieldDescription = $this->getNewFieldDescriptionInstance($class, $fieldName);
+        $fieldDescription->setName($parentAssociationMapping);
+        $fieldDescription->setAssociationMapping($associatingMapping);
+
+        return $fieldDescription;
     }
 
     /**
