@@ -57,6 +57,29 @@ class ModelManager implements ModelManagerInterface
         $fieldDescription->setOptions($options);
         $fieldDescription->setParentAssociationMappings($this->getParentAssociationMappings($class, $name));
 
+        if (!$table = $this->getTable($class)) {
+            return $fieldDescription;
+            // TODO should we throw a logic exception here ?
+        }
+
+        foreach ($table->getRelations() as $relation) {
+            if (in_array($relation->getType(), array(\RelationMap::MANY_TO_ONE, \RelationMap::ONE_TO_MANY))) {
+                if ($name == $relation->getForeignTable()->getName()) {
+                    $fieldDescription->setAssociationMapping(array(
+                        'targetEntity' => $relation->getForeignTable()->getClassName(),
+                        'type' => $relation->getType()
+                    ));
+                }
+            } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
+                if (strtolower($name) == strtolower($relation->getPluralName())) {
+                    $fieldDescription->setAssociationMapping(array(
+                        'targetEntity' => $relation->getLocalTable()->getClassName(),
+                        'type' => $relation->getType()
+                    ));
+                }
+            }
+        }
+
         if (!$column = $this->getColumn($class, $name)) {
         
             return $fieldDescription;
