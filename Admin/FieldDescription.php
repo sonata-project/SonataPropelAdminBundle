@@ -14,10 +14,18 @@ namespace Sonata\PropelAdminBundle\Admin;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 /**
- * @author Toni Uebernickel <tuebernickel@gmail.com>
+ * Field description
  */
 class FieldDescription extends BaseFieldDescription
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct()
+    {
+        $this->parentAssociationMappings = array();
+    }
+
     /**
      * Define the association mapping definition
      *
