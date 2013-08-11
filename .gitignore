@@ -1,0 +1,9 @@
+# composer related
+composer.lock
+composer.phar
+vendor
+
+# propel-generated stuff
+Tests/Fixtures/App/app/propel/sql/
+Tests/Fixtures/App/src/Sonata/TestBundle/Model/map
+Tests/Fixtures/App/src/Sonata/TestBundle/Model/om

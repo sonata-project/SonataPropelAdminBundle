@@ -1,0 +1,6 @@
+services:
+    blog_post.admin:
+        class: Sonata\TestBundle\Admin\BlogPostAdmin
+        tags:
+            - { name: sonata.admin, manager_type: propel, group: Blog, label: "Posts" }
+        arguments: [~, Sonata\TestBundle\Model\BlogPost, ""]
