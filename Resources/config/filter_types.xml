@@ -18,6 +18,10 @@
         <service id="sonata.admin.propel.filter.type.model" class="Sonata\PropelAdminBundle\Filter\ModelFilter">
             <tag name="sonata.admin.filter.type" alias="model" />
         </service>
+        <service id="sonata.admin.propel.filter.type.boolean" class="Sonata\PropelAdminBundle\Filter\BooleanFilter">
+            <tag name="sonata.admin.filter.type" alias="checkbox" />
+            <tag name="sonata.admin.filter.type" alias="boolean" />
+        </service>
     </services>
 
 </container>
