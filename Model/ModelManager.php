@@ -81,7 +81,6 @@ class ModelManager implements ModelManagerInterface
         }
 
         if (!$column = $this->getColumn($class, $name)) {
-        
             return $fieldDescription;
         }
 
@@ -535,6 +534,10 @@ class ModelManager implements ModelManagerInterface
 
         if ($table && $table->hasColumn($property)) {
             return $this->cache[$class.'::'.$property] = $table->getColumn($property);
+        }
+
+        if ($table && $table->hasColumnByInsensitiveCase($property)) {
+            return $this->cache[$class.'::'.$property] = $table->getColumnByInsensitiveCase($property);
         }
     }
 }
