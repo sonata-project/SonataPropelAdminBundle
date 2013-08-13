@@ -24,9 +24,9 @@ class ModelFilter extends AbstractFilter
      * @todo Add handling of multiple="true", value becomes a PropelObjectCollection.
      *
      * @param ProxyQueryInterface $query
-     * @param string $alias
-     * @param string $field
-     * @param string $value
+     * @param string              $alias
+     * @param string              $field
+     * @param string              $value
      *
      * @return void
      */

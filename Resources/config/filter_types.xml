@@ -22,6 +22,18 @@
             <tag name="sonata.admin.filter.type" alias="checkbox" />
             <tag name="sonata.admin.filter.type" alias="boolean" />
         </service>
+        <service id="sonata.admin.propel.filter.type.date" class="Sonata\PropelAdminBundle\Filter\DateFilter">
+            <tag name="sonata.admin.filter.type" alias="date" />
+        </service>
+        <service id="sonata.admin.orm.filter.type.date_range" class="Sonata\PropelAdminBundle\Filter\DateRangeFilter">
+            <tag name="sonata.admin.filter.type" alias="date_range" />
+        </service>
+        <service id="sonata.admin.orm.filter.type.datetime" class="Sonata\PropelAdminBundle\Filter\DateTimeFilter">
+            <tag name="sonata.admin.filter.type" alias="datetime" />
+        </service>
+        <service id="sonata.admin.orm.filter.type.datetime_range" class="Sonata\PropelAdminBundle\Filter\DateTimeRangeFilter">
+            <tag name="sonata.admin.filter.type" alias="datetime_range" />
+        </service>
     </services>
 
 </container>

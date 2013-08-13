@@ -25,9 +25,9 @@ class StringFilter extends AbstractFilter
      * Apply the filter to the ModelCriteria instance
      *
      * @param ProxyQueryInterface $query
-     * @param string $alias
-     * @param string $field
-     * @param string $value
+     * @param string              $alias
+     * @param string              $field
+     * @param string              $value
      *
      * @return void
      */
