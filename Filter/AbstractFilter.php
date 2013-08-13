@@ -27,9 +27,9 @@ abstract class AbstractFilter extends Filter
      * Apply the filter to the ModelCriteria instance
      *
      * @param ProxyQueryInterface $query
-     * @param string $alias
-     * @param string $field
-     * @param string $value
+     * @param string              $alias
+     * @param string              $field
+     * @param string              $value
      *
      * @return void
      */
@@ -41,6 +41,9 @@ abstract class AbstractFilter extends Filter
         $query->filterBy($field, sprintf($this->getOption('format', '%s'), $value['value']), $map[$value['type']]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply($query, $value)
     {
         if (!$query instanceof ProxyQuery) {
@@ -51,14 +54,19 @@ abstract class AbstractFilter extends Filter
 
         /* @var $query ModelCriteria */
         if ($this->isActive()) {
-            $column = call_user_func_array(array($query->getModelPeerName(), 'translateFieldName'), array(
-                $this->getFieldName(),
-                \BasePeer::TYPE_FIELDNAME,
-                \BasePeer::TYPE_PHPNAME,
-            ));
-
+            $column = $this->translateFieldName($this->getFieldName());
             $this->filter($query, '', $column, $this->getValue());
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function isActive()
+    {
+        $values = $this->getValue();
+
+        return is_array($values) && !empty($values['value']);
     }
 
     /**
@@ -75,4 +83,20 @@ abstract class AbstractFilter extends Filter
      * @return array
      */
     abstract protected function getCriteriaMap();
+
+    /**
+     * Translates the field name to its phpName equivalent.
+     *
+     * @param string The field name to translate.
+     *
+     * @return string
+     */
+    protected function translateFieldName($fieldName)
+    {
+        return call_user_func_array(array($query->getModelPeerName(), 'translateFieldName'), array(
+            $fieldName,
+            \BasePeer::TYPE_FIELDNAME,
+            \BasePeer::TYPE_PHPNAME,
+        ));
+    }
 }

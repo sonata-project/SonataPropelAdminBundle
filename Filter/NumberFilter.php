@@ -11,7 +11,6 @@
 
 namespace Sonata\PropelAdminBundle\Filter;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 
 use ModelCriteria;
