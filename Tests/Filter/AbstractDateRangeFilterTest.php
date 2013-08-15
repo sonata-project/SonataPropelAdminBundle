@@ -196,7 +196,7 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
 
         $filter->expects($this->any())
                ->method('translateFieldName')
-               ->with($this->equalTo($fieldName))
+               ->with($this->anything(), $this->equalTo($fieldName))
                ->will($this->returnValue($fieldName));
         $filter->setOption('field_name', $fieldName);
 

@@ -33,6 +33,10 @@ class StringFilter extends AbstractFilter
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
+        if (empty($value['type'])) {
+            $value['type'] = ChoiceType::TYPE_CONTAINS;
+        }
+
         if (ChoiceType::TYPE_EQUAL === $value['type']) {
             $this->setOption('format', '%s');
         }
