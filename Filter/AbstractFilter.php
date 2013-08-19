@@ -54,7 +54,7 @@ abstract class AbstractFilter extends Filter
 
         /* @var $query ModelCriteria */
         if ($this->isActive()) {
-            $column = $this->translateFieldName($this->getFieldName());
+            $column = $this->translateFieldName($query, $this->getFieldName());
             $this->filter($query, '', $column, $this->getValue());
         }
     }
@@ -87,16 +87,23 @@ abstract class AbstractFilter extends Filter
     /**
      * Translates the field name to its phpName equivalent.
      *
-     * @param string The field name to translate.
+     * @param ProxyQueryInterface $query
+     * @param string              $fieldName The field name to translate.
      *
      * @return string
      */
-    protected function translateFieldName($fieldName)
+    protected function translateFieldName($query, $fieldName)
     {
-        return call_user_func_array(array($query->getModelPeerName(), 'translateFieldName'), array(
-            $fieldName,
-            \BasePeer::TYPE_FIELDNAME,
-            \BasePeer::TYPE_PHPNAME,
-        ));
+        $tableMap = call_user_func(array($query->getModelPeerName(), 'getTableMap'));
+
+        if ($tableMap->hasColumn($fieldName)) {
+            return $tableMap->getColumn($fieldName)->getPhpName();
+        }
+
+        if ($tableMap->hasColumnByInsensitiveCase($fieldName)) {
+            return $tableMap->getColumnByInsensitiveCase($fieldName)->getPhpName();
+        }
+
+        throw new \RuntimeException(sprintf('Unknown field "%s"', $fieldName));
     }
 }
