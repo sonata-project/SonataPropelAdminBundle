@@ -18,6 +18,9 @@
         "symfony/symfony": ">=2.2,<2.4-dev",
         "knplabs/knp-menu-bundle": "1.1.x-dev"
     },
+    "require-dev": {
+        "propel/propel-bundle": "1.2.x"
+    },
     "autoload": {
         "psr-0": { "Sonata\\PropelAdminBundle": "" }
     },

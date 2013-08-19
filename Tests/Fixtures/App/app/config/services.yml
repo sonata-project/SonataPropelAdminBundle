@@ -1,0 +1,10 @@
+services:
+    blogpost.admin:
+        class:      Sonata\PropelAdminBundle\Tests\Fixtures\Admin\BlogPostAdmin
+        arguments:  [~, 'Sonata\PropelAdminBundle\Tests\Fixtures\Model\BlogPost', '']
+        tags:
+            -
+                name: 'sonata.admin'
+                manager_type: 'propel'
+                group: 'Transactions'
+                label: 'Depot'

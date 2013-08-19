@@ -11,6 +11,8 @@
 
 namespace Sonata\PropelAdminBundle\Model;
 
+use Exporter\Source\PropelCollectionSourceIterator;
+
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -448,7 +450,14 @@ class ModelManager implements ModelManagerInterface
      */
     public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null)
     {
-        // TODO: Implement getDataSourceIterator() method.
+        $datagrid->buildPager();
+        $query = clone $datagrid->getQuery();
+
+        $query->distinct();
+        $query->setFirstResult($firstResult);
+        $query->setMaxResults($maxResult);
+
+        return new PropelCollectionSourceIterator($query->execute(), $fields);
     }
 
     /**
@@ -458,9 +467,12 @@ class ModelManager implements ModelManagerInterface
      */
     public function getExportFields($class)
     {
-        // TODO: Implement getExportFields() method.
+        $fields = array();
+        foreach ($this->getTable($class)->getColumns() as $column) {
+            $fields[] = $column->getPhpName();
+        }
 
-        return array();
+        return $fields;
     }
 
     /**

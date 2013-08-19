@@ -1,0 +1,3 @@
+Sonata\TestBundle\Model\BlogPost:
+    BlogPost_1:
+        title: 'Test BlogPost'

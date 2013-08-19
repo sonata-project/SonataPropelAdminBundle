@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="Sonata\TestBundle\Model" defaultIdMethod="native">
+
+    <table name="blog_post">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title" type="varchar" primaryString="true" size="255" />
+    </table>
+
+</database>

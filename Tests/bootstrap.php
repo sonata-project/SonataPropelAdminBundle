@@ -6,9 +6,9 @@ $autoload = __DIR__.'/../../../../../../app/autoload.php';
 $composerAutoload = __DIR__.'/../vendor/autoload.php';
 
 if (is_file($autoload)) {
-    include $autoload;
+    $loader = include $autoload;
 } elseif (is_file($composerAutoload)) {
-    include $composerAutoload;
+    $loader = include $composerAutoload;
 } else {
     die('Unable to find autoload.php file, please use composer to load dependencies:
 
@@ -19,3 +19,6 @@ Visit http://getcomposer.org/ for more information.
 
 ');
 }
+
+$loader->add('Sonata\PropelAdminBundle\Tests', __DIR__);
+$loader->add('Sonata\TestBundle', __DIR__ . '/Fixtures/App/src');
