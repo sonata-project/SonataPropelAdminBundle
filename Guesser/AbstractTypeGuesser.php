@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 use Symfony\Bridge\Propel1\Form\PropelTypeGuesser;
+use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
  * Base type guesser
@@ -27,7 +28,12 @@ abstract class AbstractTypeGuesser implements TypeGuesserInterface
     public function guessType($class, $property, ModelManagerInterface $modelManager)
     {
         $guesser = new PropelTypeGuesser();
+        $guessedType = $guesser->guessType($class, $property);
 
-        return $guesser->guessType($class, $property);
+        if ($guessedType->getType() === 'checkbox') {
+            return new TypeGuess('boolean', $guessedType->getOptions(), $guessedType->getConfidence());
+        }
+
+        return $guessedType;
     }
 }
