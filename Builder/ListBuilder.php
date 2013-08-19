@@ -28,14 +28,19 @@ class ListBuilder implements ListBuilderInterface
      */
     protected $guesser;
 
+    protected $templates = array();
+
+
     /**
-     * @param TypeGuesserInterface $guesser
+     * @param TypeGuesserInterface  $guesser
+     * @param array                 $templates
      */
-    public function __construct(TypeGuesserInterface $guesser)
+    public function __construct(TypeGuesserInterface $guesser, array $templates = array())
     {
         $this->guesser   = $guesser;
+        $this->templates = $templates;
     }
-    
+
     /**
      * @param array $options
      *
@@ -67,6 +72,10 @@ class ListBuilder implements ListBuilderInterface
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
         $fieldDescription->setAdmin($admin);
+
+        if (!$fieldDescription->getTemplate()) {
+            $fieldDescription->setTemplate($this->getTemplate($fieldDescription->getType()));
+        }
     }
 
     /**
@@ -82,5 +91,21 @@ class ListBuilder implements ListBuilderInterface
         }
 
         $this->fixFieldDescription($admin, $fieldDescription);
+    }
+
+    /**
+     * Finds the template to use for a given field type.
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    protected function getTemplate($type)
+    {
+        if (!isset($this->templates[$type])) {
+            return null;
+        }
+
+        return $this->templates[$type];
     }
 }
