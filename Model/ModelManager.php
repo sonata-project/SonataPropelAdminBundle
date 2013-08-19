@@ -313,11 +313,14 @@ class ModelManager implements ModelManagerInterface
      *
      * @param string $class
      *
-     * @return void
+     * @return \PropelObjectCollection
      */
     public function getModelCollectionInstance($class)
     {
-        // TODO: Implement getModelCollectionInstance() method.
+        $collection = new \PropelObjectCollection();
+        $collection->setModel($class);
+
+        return $collection;
     }
 
     /**
@@ -330,7 +333,10 @@ class ModelManager implements ModelManagerInterface
      */
     public function collectionRemoveElement(&$collection, &$element)
     {
-        // TODO: Implement collectionRemoveElement() method.
+        $index = $collection->search($element);
+        if ($index !== false) {
+            $collection->remove($index);
+        }
     }
 
     /**
@@ -343,7 +349,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function collectionAddElement(&$collection, &$element)
     {
-        // TODO: Implement collectionAddElement() method.
+        $collection->append($element);
     }
 
     /**
@@ -356,9 +362,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function collectionHasElement(&$collection, &$element)
     {
-        // TODO: Implement collectionHasElement() method.
-
-        return false;
+        return $collection->contains($element);
     }
 
     /**
@@ -370,7 +374,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function collectionClear(&$collection)
     {
-        // TODO: Implement collectionClear() method.
+        return $collection->clear();
     }
 
     /**
