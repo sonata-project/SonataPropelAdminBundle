@@ -26,38 +26,44 @@ class Pager extends BasePager
     /**
      * Returns an array of results on the given page.
      *
-     * @return array
+     * @return \PropelObjectCollection
      */
     public function getResults()
     {
-        $this->results = $this->getQuery()->execute();
-        $this->setNbResults(count($this->results));
-
-        return $this->results;
+        return $this->getQuery()->execute();
     }
 
     /**
      * Initialize the Pager.
      *
      * @todo Add handling of parameters, if given.
-     *
-     * @return void
      */
     public function init()
     {
         $this->resetIterator();
 
+        $this->setNbResults($this->computeNbResults());
+
         $this->getQuery()->setFirstResult(null);
         $this->getQuery()->setMaxResults(null);
+
+        if (0 == $this->getPage() || 0 == $this->getMaxPerPage() || 0 == $this->getNbResults()) {
+            $this->setLastPage(0);
+        } else {
+            $offset = ($this->getPage() - 1) * $this->getMaxPerPage();
+
+            $this->setLastPage((int) ceil($this->getNbResults() / $this->getMaxPerPage()));
+
+            $this->getQuery()->setFirstResult((int) $offset);
+            $this->getQuery()->setMaxResults((int) $this->getMaxPerPage());
+        }
     }
 
-    /**
-     * Return the query for this pager.
-     *
-     * @return ProxyQuery
-     */
-    public function getQuery()
+    protected function computeNbResults()
     {
-        return $this->query;
+        $nbResultsQuery = clone $this->getQuery();
+        $nbResultsQuery->limit(null)->offset(null);
+
+        return $nbResultsQuery->count();
     }
 }
