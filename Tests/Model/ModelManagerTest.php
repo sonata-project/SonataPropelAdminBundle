@@ -11,6 +11,8 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Model;
 
+
+use Exporter\Source\PropelCollectionSourceIterator;
 use Sonata\PropelAdminBundle\Model\ModelManager;
 
 /**
@@ -128,5 +130,57 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array(
             $object
         ), $collection->getArrayCopy());
+    }
+
+    public function testGetDataSourceIterator()
+    {
+        $fields = array('title' => '[title]');
+        $firstResult = 10;
+        $maxResults = 25;
+        $data = array(
+            array('id' => 42, 'title' => 'Super!'),
+            array('id' => 24, 'title' => 'Foo'),
+        );
+        $results = new \PropelCollection();
+        $results->setData($data);
+
+        // configure the query mock
+        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+
+        $query->expects($this->once())
+            ->method('setFirstResult')
+            ->with($this->equalTo($firstResult));
+
+        $query->expects($this->once())
+            ->method('setMaxResults')
+            ->with($this->equalTo($maxResults));
+
+        $query->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue($results));
+
+        // configure the datagrid mock
+        $datagrid = $this->getMockBuilder('Sonata\PropelAdminBundle\Datagrid\Datagrid')
+            ->disableOriginalConstructor()
+            ->setMethods(array('buildPager', 'getQuery'))
+            ->getMock();
+
+        $datagrid->expects($this->once())
+               ->method('buildPager');
+
+        $datagrid->expects($this->once())
+                 ->method('getQuery')
+                 ->will($this->returnValue($query));
+
+        // create the manager
+        $manager = new ModelManager($datagrid);
+
+        // and finally test it!
+        $collectionIterator = $manager->getDataSourceIterator($datagrid, $fields, $firstResult, $maxResults);
+        $this->assertInstanceOf('\Exporter\Source\PropelCollectionSourceIterator', $collectionIterator);
+        $this->assertSame(array(
+            array('title' => 'Super!'),
+            array('title' => 'Foo'),
+        ), iterator_to_array($collectionIterator));
     }
 }
