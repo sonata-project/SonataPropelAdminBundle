@@ -19,7 +19,7 @@ use PropelObjectCollection;
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  *
- * @todo Add handling of sort, limit and offset properties
+ * @todo Add handling of sort
  */
 class ProxyQuery implements ProxyQueryInterface
 {
@@ -113,6 +113,7 @@ class ProxyQuery implements ProxyQueryInterface
     public function setMaxResults($maxResults)
     {
         $this->maxResults = $maxResults;
+        $this->query->limit((int) $maxResults);
 
         return $this;
     }
@@ -125,6 +126,7 @@ class ProxyQuery implements ProxyQueryInterface
     public function setFirstResult($firstResult)
     {
         $this->firstResult = $firstResult;
+        $this->query->offset((int) $firstResult);
 
         return $this;
     }
