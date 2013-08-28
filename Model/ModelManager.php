@@ -150,7 +150,10 @@ class ModelManager implements ModelManagerInterface
      */
     public function findBy($class, array $criteria = array())
     {
-        // TODO: Implement findBy() method.
+        $query = $this->createQuery($class);
+
+        // TODO: handle critierias
+        return $query->find();
     }
 
     /**
@@ -161,7 +164,10 @@ class ModelManager implements ModelManagerInterface
      */
     public function findOneBy($class, array $criteria = array())
     {
-        // TODO: Implement findOneBy() method.
+        $query = $this->createQuery($class);
+
+        // TODO: handle critierias
+        return $query->findOne();
     }
 
     /**
@@ -172,13 +178,11 @@ class ModelManager implements ModelManagerInterface
      */
     public function find($class, $id)
     {
-        $queryClass = $class.'Query';
-
         if ($this->hasCompositePk($class)) {
             $id = explode(self::ID_SEPARATOR, $id);
         }
 
-        return $queryClass::create()->findPk($id);
+        return $this->createQuery($class)->findPk($id);
     }
 
     /**
