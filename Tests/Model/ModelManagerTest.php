@@ -173,7 +173,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
                  ->will($this->returnValue($query));
 
         // create the manager
-        $manager = new ModelManager($datagrid);
+        $manager = new ModelManager();
 
         // and finally test it!
         $collectionIterator = $manager->getDataSourceIterator($datagrid, $fields, $firstResult, $maxResults);
@@ -182,5 +182,78 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
             array('title' => 'Super!'),
             array('title' => 'Foo'),
         ), iterator_to_array($collectionIterator));
+    }
+
+    /**
+     * @dataProvider getIdentifierValuesDataProvider
+     */
+    public function testGetIdentifierValues($modelClass, $pkValues, $expectedValues)
+    {
+        $model = $this->getMock($modelClass);
+        $model->expects($this->once())
+            ->method('getPrimaryKey')
+            ->will($this->returnValue($pkValues));
+
+        $manager = new ModelManager();
+        $this->assertSame($expectedValues, $manager->getIdentifierValues($model));
+    }
+
+    public function testGetIdentifierValuesWithInvalidModel()
+    {
+        $model = $this->getMock('\SplStack');
+        $model->expects($this->never())
+            ->method('getPrimaryKey');
+
+        $manager = new ModelManager();
+        $this->assertNull($manager->getIdentifierValues($model));
+    }
+
+    public function getIdentifierValuesDataProvider()
+    {
+        $baseObjectMock = '\Sonata\PropelAdminBundle\Tests\Model\BaseObjectMock';
+
+        return array(
+            // modelClass,          pkValues,       expectedValues
+            array('\Persistent',    42,             array(42)),
+            array('\Persistent',    array(24, 42),  array(24, 42)),
+
+            array($baseObjectMock,  42,             array(42)),
+            array($baseObjectMock,  array(24, 42),  array(24, 42)),
+        );
+    }
+
+    /**
+     * @dataProvider getNormalizedIdentifierDataProvider
+     */
+    public function testGetNormalizedIdentifier($modelClass, $pkValues, $expectedValues)
+    {
+        $model = $this->getMock($modelClass);
+        $model->expects($this->once())
+            ->method('getPrimaryKey')
+            ->will($this->returnValue($pkValues));
+
+        $manager = new ModelManager();
+        $this->assertSame($expectedValues, $manager->getNormalizedIdentifier($model));
+    }
+
+    public function getNormalizedIdentifierDataProvider()
+    {
+        $baseObjectMock = '\Sonata\PropelAdminBundle\Tests\Model\BaseObjectMock';
+
+        return array(
+            // modelClass,          pkValues,       expectedValues
+            array('\Persistent',    42,             '42'),
+            array('\Persistent',    array(24, 42),  '24~42'),
+
+            array($baseObjectMock,  42,             '42'),
+            array($baseObjectMock,  array(24, 42),  '24~42'),
+        );
+    }
+}
+
+class BaseObjectMock extends \BaseObject
+{
+    public function getPrimaryKey()
+    {
     }
 }
