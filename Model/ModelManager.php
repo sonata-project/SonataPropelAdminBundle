@@ -30,6 +30,8 @@ use Persistent;
  */
 class ModelManager implements ModelManagerInterface
 {
+    const ID_SEPARATOR = '~';
+
     /**
      * @var array
      */
@@ -172,6 +174,10 @@ class ModelManager implements ModelManagerInterface
     {
         $queryClass = $class.'Query';
 
+        if ($this->hasCompositePk($class)) {
+            $id = explode(self::ID_SEPARATOR, $id);
+        }
+
         return $queryClass::create()->findPk($id);
     }
 
@@ -247,12 +253,14 @@ class ModelManager implements ModelManagerInterface
     public function getIdentifierValues($model)
     {
         if ($model instanceof Persistent) {
-            return $model->getPrimaryKey();
+            // if an array is returned (composite PK), nothing is done.
+            // otherwise we return an array with only one element: the identifier
+            return (array) $model->getPrimaryKey();
         }
 
         // readonly="true" models
         if ($model instanceof BaseObject && method_exists($model, 'getPrimaryKey')) {
-            return $model->getPrimaryKey();
+            return (array) $model->getPrimaryKey();
         }
 
         return null;
@@ -295,7 +303,9 @@ class ModelManager implements ModelManagerInterface
     public function getNormalizedIdentifier($model)
     {
         if ($model instanceof BaseObject || $model instanceof Persistent) {
-            return $this->getIdentifierValues($model);
+            $values = $this->getIdentifierValues($model);
+
+            return implode(self::ID_SEPARATOR, $values);
         }
 
         return null;
@@ -555,5 +565,17 @@ class ModelManager implements ModelManagerInterface
         if ($table && $table->hasColumnByInsensitiveCase($property)) {
             return $this->cache[$class.'::'.$property] = $table->getColumnByInsensitiveCase($property);
         }
+    }
+
+    /**
+     * Indicates if the given class has a composite primary key.
+     *
+     * @param string $class
+     *
+     * @return boolean
+     */
+    protected function hasCompositePk($class)
+    {
+        return count($this->getIdentifierFieldNames($class)) !== 1;
     }
 }
