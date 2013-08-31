@@ -21,8 +21,6 @@ class ModelFilter extends AbstractFilter
     /**
      * Apply the filter to the ModelCriteria instance
      *
-     * @todo Add handling of multiple="true", value becomes a PropelObjectCollection.
-     *
      * @param ProxyQueryInterface $query
      * @param string              $alias
      * @param string              $field
@@ -32,7 +30,11 @@ class ModelFilter extends AbstractFilter
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
-        $query->filterBy($field, $value['value']->getId());
+        if ($value['value'] instanceof \PropelObjectCollection) {
+            $query->filterBy($field, $value['value'], \Criteria::IN);
+        } else {
+            $query->filterBy($field, $value['value']->getId(), \Criteria::EQUAL);
+        }
     }
 
     /**
@@ -50,9 +52,9 @@ class ModelFilter extends AbstractFilter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_default', array(
-            'field_type' => 'model',
+            'field_type'    => 'model',
             'field_options' => $this->getFieldOptions(),
-            'label' => $this->getLabel(),
+            'label'         => $this->getLabel(),
         ));
     }
 }
