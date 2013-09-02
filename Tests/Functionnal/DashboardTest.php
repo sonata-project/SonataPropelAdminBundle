@@ -2,8 +2,6 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Functionnal;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 
 class DashboardTest extends WebTestCase
 {

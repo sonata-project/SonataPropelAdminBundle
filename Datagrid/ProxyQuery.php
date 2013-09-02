@@ -64,6 +64,33 @@ class ProxyQuery implements ProxyQueryInterface
     }
 
     /**
+     * Apply a filter to a given column.
+     *
+     * Calls the filterBy{Column}() method if it exists or fallbacks to
+     * ModelCriteria's filterBy() otherwise.
+     *
+     * @param string $column     The column on which we apply a filter (must be its phpName).
+     * @param mixed  $value      The value to filter by.
+     * @param string $comparison The comparison operator.
+     *
+     * @return ProxyQuery
+     */
+    public function filterBy($column, $value, $comparison = \Criteria::EQUAL)
+    {
+        $method = 'filterBy';
+        $args = array($column, $value, $comparison);
+
+        if (method_exists($this->query, 'filterBy' . $column)) {
+            $method = 'filterBy' . $column;
+            $args = array($value, $comparison);
+        }
+
+        call_user_func_array(array($this->query, $method), $args);
+
+        return $this;
+    }
+
+    /**
      * Forward calls to the ModelCriteria.
      *
      * @param string $name
