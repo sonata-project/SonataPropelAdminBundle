@@ -223,7 +223,8 @@ class ModelManager implements ModelManagerInterface
      */
     public function createQuery($class, $alias = 'o')
     {
-        return new ProxyQuery(new ModelCriteria(null, $class, $alias));
+        $queryClass = $class . 'Query';
+        return new ProxyQuery($queryClass::create($alias));
     }
 
     /**
