@@ -68,17 +68,19 @@ class ModelManager implements ModelManagerInterface
 
         foreach ($table->getRelations() as $relation) {
             if (in_array($relation->getType(), array(\RelationMap::MANY_TO_ONE, \RelationMap::ONE_TO_MANY))) {
-                if ($name == $relation->getForeignTable()->getName()) {
+                // $relation->getName() is a phpName, so $name should also be one
+                if (strtolower($name) === strtolower($relation->getName())) {
                     $fieldDescription->setAssociationMapping(array(
-                        'targetEntity' => $relation->getForeignTable()->getClassName(),
-                        'type' => $relation->getType()
+                        'targetEntity'  => $relation->getForeignTable()->getClassName(),
+                        'type'          => $relation->getType()
                     ));
                 }
+            // $relation->getPluralName() is a phpName, so $name should also be one
             } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
-                if (strtolower($name) == strtolower($relation->getPluralName())) {
+                if (strtolower($name) === strtolower($relation->getPluralName())) {
                     $fieldDescription->setAssociationMapping(array(
-                        'targetEntity' => $relation->getLocalTable()->getClassName(),
-                        'type' => $relation->getType()
+                        'targetEntity'  => $relation->getLocalTable()->getClassName(),
+                        'type'          => $relation->getType()
                     ));
                 }
             }
