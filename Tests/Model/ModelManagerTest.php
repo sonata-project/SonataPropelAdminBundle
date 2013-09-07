@@ -249,11 +249,71 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
             array($baseObjectMock,  array(24, 42),  '24~42'),
         );
     }
+
+    /**
+     * @dataProvider                invalidFieldNameProvider
+     * @expectedException           \RuntimeException
+     * @expectedExceptionMessage    The name argument must be a string
+     */
+    public function testGetNewFieldDescriptionInstanceWithInvalidFieldName($fieldName)
+    {
+        $manager = new ModelManager();
+        $manager->getNewFieldDescriptionInstance('\Dummy\Classname', $fieldName);
+    }
+
+    public function invalidFieldNameProvider()
+    {
+        return array(
+            array(null),
+            array(1),
+            array(array()),
+            array(new \stdClass),
+        );
+    }
+
+    /**
+     * @dataProvider validFieldNameProvider
+     */
+    public function testGetNewFieldDescriptionInstanceWithValidFieldName($tableMap, $className, $fieldName, $options)
+    {
+        $manager = new TestableModelManager();
+        $manager->setTableMap($className, $tableMap);
+
+        $fieldDescription = $manager->getNewFieldDescriptionInstance($className, $fieldName, $options);
+
+        $this->assertInstanceOf('\Sonata\PropelAdminBundle\Admin\FieldDescription', $fieldDescription);
+        $this->assertSame($fieldName, $fieldDescription->getName());
+        $this->assertEquals(array_merge(array('placeholder' => 'short_object_description_placeholder'), $options), $fieldDescription->getOptions());
+    }
+
+    public function validFieldNameProvider()
+    {
+        $className = '\Foo\ClassName';
+        $options = array(
+            'foo' => 'bar',
+        );
+
+        $emptyTableMap = new \TableMap();
+
+        return array(
+            //    tableMap,             className,    fieldName,  options
+            array(null,                 $className,   'Title',    $options),
+            array($emptyTableMap,       $className,   'Title',    $options),
+        );
+    }
 }
 
 class BaseObjectMock extends \BaseObject
 {
     public function getPrimaryKey()
     {
+    }
+}
+
+class TestableModelManager extends ModelManager
+{
+    public function setTableMap($class, $tableMap)
+    {
+        $this->cache[$class] = $tableMap;
     }
 }

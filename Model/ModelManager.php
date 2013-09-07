@@ -45,7 +45,7 @@ class ModelManager implements ModelManagerInterface
      * * the TableMap of the model class.
      *
      * @param string $class   The FQCN of the model.
-     * @param string $name    The column name of the model.
+     * @param string $name    The column name of the model (should be given as a phpName).
      * @param array  $options A list of options to be passed to the new FielDescription.
      *
      * @return FieldDescription
@@ -68,14 +68,12 @@ class ModelManager implements ModelManagerInterface
 
         foreach ($table->getRelations() as $relation) {
             if (in_array($relation->getType(), array(\RelationMap::MANY_TO_ONE, \RelationMap::ONE_TO_MANY))) {
-                // $relation->getName() is a phpName, so $name should also be one
                 if (strtolower($name) === strtolower($relation->getName())) {
                     $fieldDescription->setAssociationMapping(array(
                         'targetEntity'  => $relation->getForeignTable()->getClassName(),
                         'type'          => $relation->getType()
                     ));
                 }
-            // $relation->getPluralName() is a phpName, so $name should also be one
             } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
                 if (strtolower($name) === strtolower($relation->getPluralName())) {
                     $fieldDescription->setAssociationMapping(array(
@@ -86,11 +84,9 @@ class ModelManager implements ModelManagerInterface
             }
         }
 
-        if (!$column = $this->getColumn($class, $name)) {
-            return $fieldDescription;
+        if ($column = $this->getColumn($class, $name)) {
+            $fieldDescription->setType($column->getType());
         }
-
-        $fieldDescription->setType($column->getType());
 
         return $fieldDescription;
     }
