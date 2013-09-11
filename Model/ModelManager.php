@@ -35,7 +35,7 @@ class ModelManager implements ModelManagerInterface
     /**
      * @var array
      */
-    private $cache = array();
+    protected $cache = array();
 
     /**
      * Returns a new FieldDescription.
