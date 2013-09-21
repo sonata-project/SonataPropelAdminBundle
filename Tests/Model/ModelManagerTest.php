@@ -249,11 +249,111 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
             array($baseObjectMock,  array(24, 42),  '24~42'),
         );
     }
+
+    /**
+     * @dataProvider                invalidFieldNameProvider
+     * @expectedException           \RuntimeException
+     * @expectedExceptionMessage    The name argument must be a string
+     */
+    public function testGetNewFieldDescriptionInstanceWithInvalidFieldName($fieldName)
+    {
+        $manager = new ModelManager();
+        $manager->getNewFieldDescriptionInstance('\Dummy\Classname', $fieldName);
+    }
+
+    public function invalidFieldNameProvider()
+    {
+        return array(
+            array(null),
+            array(1),
+            array(array()),
+            array(new \stdClass),
+        );
+    }
+
+    /**
+     * @dataProvider validFieldNameProvider
+     */
+    public function testGetNewFieldDescriptionInstanceWithValidFieldName($tableMap, $columnsMap, $className, $fieldName, $options, array $expected)
+    {
+        $manager = new TestableModelManager();
+        $manager->addTable($className, $tableMap);
+        foreach ($columnsMap as $map) {
+            $manager->addColumn($className, $map->getName(), $map);
+        }
+
+        $fieldDescription = $manager->getNewFieldDescriptionInstance($className, $fieldName, $options);
+
+        $this->assertInstanceOf('\Sonata\PropelAdminBundle\Admin\FieldDescription', $fieldDescription);
+        $this->assertSame($fieldName, $fieldDescription->getName());
+        $this->assertSame($expected['type'], $fieldDescription->getType());
+        $this->assertEquals(array_merge(array('placeholder' => 'short_object_description_placeholder'), $options), $fieldDescription->getOptions());
+        $this->assertEquals($expected['association_mapping'], $fieldDescription->getAssociationMapping());
+    }
+
+    public function validFieldNameProvider()
+    {
+        $className = '\Foo\Book';
+        $options = array(
+            'foo' => 'bar',
+        );
+
+        // table maps
+        $emptyTableMap = new \TableMap();
+        $authorTable = new \TableMap();
+        $authorTable->setClassName('\Foo\Author');
+        $resellerTable = new \TableMap();
+        $resellerTable->setClassName('\Foo\Reseller');
+        $relationsTableMap = $this->getMock('\TableMap');
+
+        // relations
+        $authorRelation = new \RelationMap('Author');
+        $authorRelation->setType(\RelationMap::ONE_TO_MANY);
+        $authorRelation->setForeignTable($authorTable);
+        $resellerRelation = new \RelationMap('Reseller');
+        $resellerRelation->setType(\RelationMap::MANY_TO_MANY);
+        $resellerRelation->setLocalTable($resellerTable);
+
+        // configure table maps mocks
+        $relationsTableMap->expects($this->any())
+            ->method('getRelations')
+            ->will($this->returnValue(array($authorRelation, $resellerRelation)));
+
+        // columns
+        $titleColumn = new \ColumnMap('Title', $emptyTableMap);
+        $titleColumn->setType('text');
+
+        return array(
+            //    tableMap,             columns,                className,    fieldName,    options, expected
+            // no error is thrown if the column is not found
+            array(null,                 array(),                $className,   'Title',      $options, array('type' => null, 'association_mapping' => null)),
+            // column not found, type remains empty
+            array($emptyTableMap,       array(),                $className,   'Title',      $options, array('type' => null, 'association_mapping' => null)),
+            // column found, type filled
+            array($emptyTableMap,       array($titleColumn),    $className,   'Title',      $options, array('type' => 'text', 'association_mapping' => null)),
+            // test relations
+            array($relationsTableMap,   array($titleColumn),    $className,   'Author',     $options, array('type' => \RelationMap::ONE_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::ONE_TO_MANY))),
+            array($relationsTableMap,   array($titleColumn),    $className,   'Resellers',  $options, array('type' => \RelationMap::MANY_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Reseller', 'type' => \RelationMap::MANY_TO_MANY))),
+        );
+    }
 }
 
 class BaseObjectMock extends \BaseObject
 {
     public function getPrimaryKey()
     {
+    }
+}
+
+class TestableModelManager extends ModelManager
+{
+    public function addTable($class, $tableMap)
+    {
+        $this->cache[$class] = $tableMap;
+    }
+
+    public function addColumn($class, $property, $columnMap)
+    {
+        $this->cache[$class.'::'.$property] = $columnMap;
     }
 }
