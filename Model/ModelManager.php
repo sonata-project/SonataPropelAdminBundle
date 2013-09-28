@@ -255,18 +255,18 @@ class ModelManager implements ModelManagerInterface
      */
     public function getIdentifierValues($model)
     {
+        $value = null;
+
         if ($model instanceof Persistent) {
             // if an array is returned (composite PK), nothing is done.
             // otherwise we return an array with only one element: the identifier
-            return (array) $model->getPrimaryKey();
+            $value = $model->getPrimaryKey();
+        } elseif ($model instanceof BaseObject && method_exists($model, 'getPrimaryKey')) {
+            // readonly="true" models
+            $value = $model->getPrimaryKey();
         }
 
-        // readonly="true" models
-        if ($model instanceof BaseObject && method_exists($model, 'getPrimaryKey')) {
-            return (array) $model->getPrimaryKey();
-        }
-
-        return null;
+        return empty($value) ? null : (array) $value;
     }
 
     /**
@@ -307,6 +307,10 @@ class ModelManager implements ModelManagerInterface
     {
         if ($model instanceof BaseObject || $model instanceof Persistent) {
             $values = $this->getIdentifierValues($model);
+
+            if (empty($values)) {
+                return null;
+            }
 
             return implode(self::ID_SEPARATOR, $values);
         }
