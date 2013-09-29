@@ -247,6 +247,10 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
 
             array($baseObjectMock,  42,             '42'),
             array($baseObjectMock,  array(24, 42),  '24~42'),
+
+            array($baseObjectMock,  array(),        null),
+            array($baseObjectMock,  '',             null),
+            array($baseObjectMock,  0,              null),
         );
     }
 
