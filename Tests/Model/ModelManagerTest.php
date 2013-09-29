@@ -307,9 +307,14 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $relationsTableMap = $this->getMock('\TableMap');
 
         // relations
+        $mainAuthorRelation = new \RelationMap('MainAuthor');
+        $mainAuthorRelation->setType(\RelationMap::MANY_TO_ONE);
+        $mainAuthorRelation->setForeignTable($authorTable);
+
         $authorRelation = new \RelationMap('Author');
         $authorRelation->setType(\RelationMap::ONE_TO_MANY);
         $authorRelation->setForeignTable($authorTable);
+
         $resellerRelation = new \RelationMap('Reseller');
         $resellerRelation->setType(\RelationMap::MANY_TO_MANY);
         $resellerRelation->setLocalTable($resellerTable);
@@ -317,7 +322,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         // configure table maps mocks
         $relationsTableMap->expects($this->any())
             ->method('getRelations')
-            ->will($this->returnValue(array($authorRelation, $resellerRelation)));
+            ->will($this->returnValue(array($mainAuthorRelation, $authorRelation, $resellerRelation)));
 
         // columns
         $titleColumn = new \ColumnMap('Title', $emptyTableMap);
@@ -332,7 +337,8 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
             // column found, type filled
             array($emptyTableMap,       array($titleColumn),    $className,   'Title',      $options, array('type' => 'text', 'association_mapping' => null)),
             // test relations
-            array($relationsTableMap,   array($titleColumn),    $className,   'Author',     $options, array('type' => \RelationMap::ONE_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::ONE_TO_MANY))),
+            array($relationsTableMap,   array($titleColumn),    $className,   'MainAuthor', $options, array('type' => \RelationMap::MANY_TO_ONE, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::MANY_TO_ONE))),
+            array($relationsTableMap,   array($titleColumn),    $className,   'Authors',    $options, array('type' => \RelationMap::ONE_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::ONE_TO_MANY))),
             array($relationsTableMap,   array($titleColumn),    $className,   'Resellers',  $options, array('type' => \RelationMap::MANY_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Reseller', 'type' => \RelationMap::MANY_TO_MANY))),
         );
     }
