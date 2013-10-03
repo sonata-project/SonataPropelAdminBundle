@@ -507,9 +507,11 @@ class ModelManager implements ModelManagerInterface
      */
     public function getPaginationParameters(DatagridInterface $datagrid, $page)
     {
-        // TODO: Implement getPaginationParameters() method.
+        $values = $datagrid->getValues();
 
-        return array();
+        $values['_page'] = $page;
+
+        return array('filter' => $values);
     }
 
     /**
