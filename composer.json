@@ -13,11 +13,11 @@
     ],
     "require": {
         "propel/propel1": ">=1.6,<2.0",
-        "sonata-project/admin-bundle": "2.2.*@dev",
-        "sonata-project/block-bundle": "2.2.*@dev",
+        "sonata-project/admin-bundle": "2.2.*",
+        "sonata-project/block-bundle": "2.2.*",
         "sonata-project/exporter": "dev-master as 1.3.2",
         "symfony/symfony": ">=2.2,<2.4-dev",
-        "knplabs/knp-menu-bundle": "1.1.x-dev"
+        "knplabs/knp-menu-bundle": "1.1.*"
     },
     "require-dev": {
         "propel/propel-bundle": "1.2.x"
