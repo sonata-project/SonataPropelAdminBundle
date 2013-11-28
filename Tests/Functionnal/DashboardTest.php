@@ -2,7 +2,6 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Functionnal;
 
-
 class DashboardTest extends WebTestCase
 {
     public function testAccessible()

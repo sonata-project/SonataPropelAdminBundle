@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 
 use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
-        
+
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
@@ -36,7 +36,7 @@ class ShowBuilder implements ShowBuilderInterface
     {
         $this->guesser   = $guesser;
     }
-    
+
     /**
      * @param array $options
      *
@@ -49,9 +49,9 @@ class ShowBuilder implements ShowBuilderInterface
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param null $type
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param null                                                 $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      *
      * @return void
      */
@@ -71,7 +71,7 @@ class ShowBuilder implements ShowBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      *
      * @return void

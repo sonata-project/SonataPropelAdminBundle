@@ -11,7 +11,6 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Model;
 
-
 use Exporter\Source\PropelCollectionSourceIterator;
 use Sonata\PropelAdminBundle\Model\ModelManager;
 

@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class RouteBuilder implements RouteBuilderInterface
 {
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface  $admin
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      */
     public function build(AdminInterface $admin, RouteCollection $collection)

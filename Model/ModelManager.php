@@ -22,7 +22,6 @@ use Sonata\PropelAdminBundle\Admin\FieldDescription;
 use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
 
 use BaseObject;
-use ModelCriteria;
 use Persistent;
 
 /**
@@ -149,7 +148,7 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param string $class
-     * @param array $criteria
+     * @param array  $criteria
      *
      * @return object
      */
@@ -177,7 +176,7 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param string $class
-     * @param int $id
+     * @param int    $id
      *
      * @return BaseObject
      */
@@ -191,7 +190,7 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @param string $class
+     * @param string                                           $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
      *
      * @return void
@@ -233,6 +232,7 @@ class ModelManager implements ModelManagerInterface
     public function createQuery($class, $alias = 'o')
     {
         $queryClass = $class . 'Query';
+
         return new ProxyQuery($queryClass::create($alias));
     }
 
@@ -407,14 +407,13 @@ class ModelManager implements ModelManagerInterface
      * Returns the parameters used in the columns header
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
+     * @param \Sonata\AdminBundle\Datagrid\DatagridInterface      $datagrid
      *
      * @return array
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
     {
         // TODO: Implement getSortParameters() method.
-
         return array();
     }
 
@@ -434,7 +433,7 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param string $class
-     * @param array $array
+     * @param array  $array
      *
      * @return void
      */
@@ -466,9 +465,9 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @param array $fields
-     * @param null $firstResult
-     * @param null $maxResult
+     * @param array                                          $fields
+     * @param null                                           $firstResult
+     * @param null                                           $maxResult
      *
      * @return void
      */
@@ -501,7 +500,7 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface $datagrid
-     * @param int $page
+     * @param int                                            $page
      *
      * @return array
      */
@@ -518,9 +517,9 @@ class ModelManager implements ModelManagerInterface
      * @todo Add support for related classes.
      * @todo Add support for multi-column primary key.
      *
-     * @param string $class
+     * @param string                                           $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
-     * @param array $idx
+     * @param array                                            $idx
      *
      * @return void
      */

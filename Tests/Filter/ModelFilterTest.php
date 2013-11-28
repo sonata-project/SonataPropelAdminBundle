@@ -11,7 +11,6 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
-use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Sonata\PropelAdminBundle\Filter\ModelFilter;
 
 use \Criteria;

@@ -57,7 +57,7 @@ class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * @param AdminInterface $admin
+     * @param AdminInterface            $admin
      * @param FieldDescriptionInterface $fieldDescription
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
@@ -69,10 +69,10 @@ class DatagridBuilder implements DatagridBuilderInterface
     }
 
     /**
-     * @param DatagridInterface $datagrid
-     * @param string $type
+     * @param DatagridInterface         $datagrid
+     * @param string                    $type
      * @param FieldDescriptionInterface $fieldDescription
-     * @param AdminInterface $admin
+     * @param AdminInterface            $admin
      */
     public function addFilter(DatagridInterface $datagrid, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
@@ -105,7 +105,7 @@ class DatagridBuilder implements DatagridBuilderInterface
      * Create a new Datagrid.
      *
      * @param AdminInterface $admin
-     * @param array $values
+     * @param array          $values
      *
      * @return DatagridInterface
      */

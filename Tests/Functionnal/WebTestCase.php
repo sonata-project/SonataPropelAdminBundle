@@ -23,7 +23,6 @@ class WebTestCase extends BaseWebTestCase
 {
     protected static $application;
 
-
     public static function setUpBeforeClass()
     {
         self::runCommand('propel:build');
@@ -34,6 +33,7 @@ class WebTestCase extends BaseWebTestCase
     protected static function runCommand($command, $hideOutput = true)
     {
         $application = self::getApplication();
+
         return $application->run(new StringInput($command), $hideOutput ? new NullOutput() : null);
     }
 

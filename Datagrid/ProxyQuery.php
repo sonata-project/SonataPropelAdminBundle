@@ -51,7 +51,7 @@ class ProxyQuery implements ProxyQueryInterface
     /**
      * Execute the configured query.
      *
-     * @param array $params
+     * @param array       $params
      * @param string|null $hydrationMode
      *
      * @return PropelObjectCollection
@@ -94,7 +94,7 @@ class ProxyQuery implements ProxyQueryInterface
      * Forward calls to the ModelCriteria.
      *
      * @param string $name
-     * @param array $args
+     * @param array  $args
      *
      * @return mixed
      */

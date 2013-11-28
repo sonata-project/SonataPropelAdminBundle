@@ -30,10 +30,9 @@ class ListBuilder implements ListBuilderInterface
 
     protected $templates = array();
 
-
     /**
-     * @param TypeGuesserInterface  $guesser
-     * @param array                 $templates
+     * @param TypeGuesserInterface $guesser
+     * @param array                $templates
      */
     public function __construct(TypeGuesserInterface $guesser, array $templates = array())
     {
@@ -53,9 +52,9 @@ class ListBuilder implements ListBuilderInterface
 
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
-     * @param null|mixed $type
-     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param null|mixed                                           $type
+     * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
+     * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
     public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
@@ -66,7 +65,7 @@ class ListBuilder implements ListBuilderInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)

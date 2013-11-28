@@ -37,7 +37,7 @@ class FormContractor implements FormContractorInterface
     }
 
     /**
-     * @param \Sonata\AdminBundle\Admin\AdminInterface $admin
+     * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      *
      * @return void
@@ -58,7 +58,7 @@ class FormContractor implements FormContractorInterface
 
     /**
      * @param string $name
-     * @param array $options
+     * @param array  $options
      *
      * @return FormBuilder
      */
@@ -68,7 +68,7 @@ class FormContractor implements FormContractorInterface
     }
 
     /**
-     * @param string $type
+     * @param string                                              $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      *
      * @return array
