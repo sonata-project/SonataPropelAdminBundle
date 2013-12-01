@@ -14,6 +14,7 @@ namespace Sonata\PropelAdminBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Sonata\PropelAdminBundle\DependencyInjection\Compiler\AddGuesserCompilerPass;
+use Sonata\PropelAdminBundle\DependencyInjection\Compiler\AddTemplatesCompilerPass;
 
 /**
  * Sonata Propel Admin Bundle
@@ -26,5 +27,6 @@ class SonataPropelAdminBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddGuesserCompilerPass());
+        $container->addCompilerPass(new AddTemplatesCompilerPass());
     }
 }
