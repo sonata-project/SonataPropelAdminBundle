@@ -110,6 +110,16 @@ abstract class AbstractFilter extends Filter
             return $tableMap->getColumnByInsensitiveCase($fieldName)->getPhpName();
         }
 
+        if ($tableMap->hasRelation($relationName = ucfirst($fieldName))) {
+            $relation = $tableMap->getRelation($relationName);
+
+            if (!$relation->isComposite()) {
+                $columns = $relation->getLeftColumns();
+
+                return $columns[0]->getPhpName();
+            }
+        }
+
         throw new \RuntimeException(sprintf('Unknown field "%s"', $fieldName));
     }
 }
