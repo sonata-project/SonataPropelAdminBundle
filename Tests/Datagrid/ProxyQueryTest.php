@@ -20,6 +20,23 @@ use Sonata\PropelAdminBundle\Tests\Functionnal\WebTestCase;
  */
 class ProxyQueryTest extends WebTestCase
 {
+    public function testWithVirtualColumns()
+    {
+        $query = $this->getMockBuilder('\Sonata\TestBundle\Model\BlogPostQuery', array('filterByTitle'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $query->expects($this->once())
+            ->method('filterByIsPublished')
+            ->with(
+                $this->equalTo(true),
+                $this->equalTo(\Criteria::EQUAL)
+            );
+
+        $proxy = new ProxyQuery($query);
+        // @note no field named "isPublished" in the model
+        $proxy->filterBy('isPublished', true);
+    }
+
     public function testFilterByCallsQueryClassesIfMethodExists()
     {
         $query = $this->getMockBuilder('\Sonata\TestBundle\Model\BlogPostQuery', array('filterByTitle'))

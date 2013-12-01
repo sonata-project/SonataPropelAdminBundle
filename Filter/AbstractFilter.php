@@ -53,10 +53,16 @@ abstract class AbstractFilter extends Filter
         $this->setValue($value);
 
         /* @var $query ModelCriteria */
-        if ($this->isActive()) {
-            $column = $this->translateFieldName($query, $this->getFieldName());
-            $this->filter($query, '', $column, $this->getValue());
+        if (!$this->isActive()) {
+            return;
         }
+
+        $column = $this->getFieldName();
+        if (!$query->hasMethod('filterBy'.ucfirst($this->getFieldName()))) {
+            $column = $this->translateFieldName($query, $this->getFieldName());
+        }
+
+        $this->filter($query, '', $column, $this->getValue());
     }
 
     /**

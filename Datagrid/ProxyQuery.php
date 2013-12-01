@@ -80,8 +80,8 @@ class ProxyQuery implements ProxyQueryInterface
         $method = 'filterBy';
         $args = array($column, $value, $comparison);
 
-        if (method_exists($this->query, 'filterBy' . $column)) {
-            $method = 'filterBy' . $column;
+        if (method_exists($this->query, 'filterBy' . ucfirst($column))) {
+            $method = 'filterBy' . ucfirst($column);
             $args = array($value, $comparison);
         }
 
@@ -192,5 +192,10 @@ class ProxyQuery implements ProxyQueryInterface
     public function getQuery()
     {
         return $this->query;
+    }
+
+    public function hasMethod($method)
+    {
+        return method_exists($this, $method) || method_exists($this->query, $method);
     }
 }
