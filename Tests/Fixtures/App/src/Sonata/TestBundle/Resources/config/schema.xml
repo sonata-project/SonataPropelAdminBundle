@@ -4,6 +4,7 @@
     <table name="blog_post">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="title" type="varchar" primaryString="true" size="255" />
+        <column name="published" type="boolean" />
     </table>
 
 </database>
