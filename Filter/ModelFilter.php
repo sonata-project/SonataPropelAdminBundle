@@ -15,6 +15,7 @@ use Criteria;
 use PropelObjectCollection;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -33,10 +34,14 @@ class ModelFilter extends AbstractFilter
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
+        $map = $this->getCriteriaMap();
+
         if ($value['value'] instanceof PropelObjectCollection) {
-            $query->filterBy($field, $value['value'], Criteria::IN);
+            $comparison = $value['type'] === ChoiceType::TYPE_NOT_CONTAINS ? $map[$value['type']] : Criteria::IN;
+            $query->filterBy($field, $value['value'], $comparison);
         } else {
-            $query->filterBy($field, $value['value']->getId(), Criteria::EQUAL);
+            $comparison = $map[$value['type'] ?: ChoiceType::TYPE_CONTAINS];
+            $query->filterBy($field, $value['value'], $comparison);
         }
     }
 
@@ -45,7 +50,14 @@ class ModelFilter extends AbstractFilter
      *
      * @return array
      */
-    protected function getCriteriaMap() { }
+    protected function getCriteriaMap()
+    {
+        return array(
+            ChoiceType::TYPE_CONTAINS       => Criteria::IN,
+            ChoiceType::TYPE_NOT_CONTAINS   => Criteria::NOT_IN,
+            ChoiceType::TYPE_EQUAL          => Criteria::EQUAL,
+        );
+    }
 
     /**
      * Returns the main widget used to render the filter
@@ -55,6 +67,7 @@ class ModelFilter extends AbstractFilter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_default', array(
+            'operator_type' => 'sonata_type_equal',
             'field_type'    => 'model',
             'field_options' => $this->getFieldOptions(),
             'label'         => $this->getLabel(),
