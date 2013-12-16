@@ -14,6 +14,7 @@ class AppKernel extends Kernel
 
             new Propel\PropelBundle\PropelBundle(),
 
+            new Sonata\CoreBundle\SonataCoreBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
