@@ -88,19 +88,34 @@ abstract class AbstractFilterTest extends \PHPUnit_Framework_TestCase
     {
         $query = $this->getMockBuilder('\Sonata\PropelAdminBundle\Datagrid\ProxyQuery')
             ->disableOriginalConstructor()
-            ->setMethods(array('filterBy'))
+            ->setMethods(array('filterBy', 'getModelName'))
             ->getMock();
+
+        $query
+            ->expects($this->any())
+            ->method('getModelName')
+            ->will($this->returnValue('\Foo\Model\Bar'));
 
         return $query;
     }
 
-    protected function getFilter($fieldName)
+    protected function getModelManagerMock()
     {
-        $filter = $this->getMockBuilder($this->getFilterClass())
+        $manager = $this->getMockBuilder('\Sonata\PropelAdminBundle\Model\ModelManager')
             ->setMethods(array('translateFieldName'))
             ->getMock();
 
-        $filter->expects($this->any())
+        return $manager;
+    }
+
+    protected function getFilter($fieldName)
+    {
+        $modelManager = $this->getModelManagerMock();
+
+        $filterClass = $this->getFilterClass();
+        $filter = new $filterClass($modelManager);
+
+        $modelManager->expects($this->any())
                ->method('translateFieldName')
                ->with($this->anything(), $this->equalTo($fieldName))
                ->will($this->returnValue($fieldName));

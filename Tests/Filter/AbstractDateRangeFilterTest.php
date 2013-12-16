@@ -69,6 +69,10 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
         $query = $this->getQueryMock();
 
         $query->expects($this->at(0))
+               ->method('getModelName')
+               ->will($this->returnValue('not null'));
+
+        $query->expects($this->at(1))
                ->method('filterBy')
                ->with(
                    $this->equalTo(self::FIELD_NAME),
@@ -76,7 +80,7 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
                    $this->equalTo($startComparisonOperator)
                );
 
-        $query->expects($this->at(1))
+        $query->expects($this->at(2))
                ->method('filterBy')
                ->with(
                    $this->equalTo(self::FIELD_NAME),
@@ -101,6 +105,10 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
         $query = $this->getQueryMock();
 
         $query->expects($this->at(0))
+               ->method('getModelName')
+               ->will($this->returnValue('not null'));
+
+        $query->expects($this->at(1))
                ->method('filterBy')
                ->with(
                    $this->equalTo(self::FIELD_NAME),
@@ -109,11 +117,11 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
                )
                ->will($this->returnSelf());
 
-        $query->expects($this->at(1))
+        $query->expects($this->at(2))
                ->method('_or')
                ->will($this->returnSelf());
 
-        $query->expects($this->at(2))
+        $query->expects($this->at(3))
                ->method('filterBy')
                ->with(
                    $this->equalTo(self::FIELD_NAME),
@@ -182,7 +190,7 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
     {
         $query = $this->getMockBuilder('\Sonata\PropelAdminBundle\Datagrid\ProxyQuery')
             ->disableOriginalConstructor()
-            ->setMethods(array('filterBy', '_or'))
+            ->setMethods(array('filterBy', '_or', 'getModelName'))
             ->getMock();
 
         return $query;
@@ -190,16 +198,29 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
 
     protected function getFilter($fieldName)
     {
-        $filter = $this->getMockBuilder($this->getFilterClass())
-            ->setMethods(array('translateFieldName'))
-            ->getMock();
+        $modelManager = $this->getModelManagerMock();
 
-        $filter->expects($this->any())
+        $filterClass = $this->getFilterClass();
+        $filter = new $filterClass($modelManager);
+
+        $modelManager->expects($this->any())
                ->method('translateFieldName')
                ->with($this->anything(), $this->equalTo($fieldName))
                ->will($this->returnValue($fieldName));
-        $filter->setOption('field_name', $fieldName);
+
+        $filter->initialize('filter', array(
+            'field_name' => $fieldName
+        ));
 
         return $filter;
+    }
+
+    protected function getModelManagerMock()
+    {
+        $manager = $this->getMockBuilder('\Sonata\PropelAdminBundle\Model\ModelManager')
+            ->setMethods(array('translateFieldName'))
+            ->getMock();
+
+        return $manager;
     }
 }

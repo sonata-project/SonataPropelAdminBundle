@@ -11,8 +11,9 @@
 
 namespace Sonata\PropelAdminBundle\Filter;
 
-use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Filter;
+use Sonata\PropelAdminBundle\Model\ModelManager;
 
 use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
 
@@ -23,6 +24,13 @@ use ModelCriteria;
  */
 abstract class AbstractFilter extends Filter
 {
+    protected $modelManager;
+
+    public function __construct(ModelManager $modelManager)
+    {
+        $this->modelManager = $modelManager;
+    }
+
     /**
      * Apply the filter to the ModelCriteria instance
      *
@@ -100,26 +108,6 @@ abstract class AbstractFilter extends Filter
      */
     protected function translateFieldName($query, $fieldName)
     {
-        $tableMap = call_user_func(array($query->getModelPeerName(), 'getTableMap'));
-
-        if ($tableMap->hasColumn($fieldName)) {
-            return $tableMap->getColumn($fieldName)->getPhpName();
-        }
-
-        if ($tableMap->hasColumnByInsensitiveCase($fieldName)) {
-            return $tableMap->getColumnByInsensitiveCase($fieldName)->getPhpName();
-        }
-
-        if ($tableMap->hasRelation($relationName = ucfirst($fieldName))) {
-            $relation = $tableMap->getRelation($relationName);
-
-            if (!$relation->isComposite()) {
-                $columns = $relation->getLeftColumns();
-
-                return $columns[0]->getPhpName();
-            }
-        }
-
-        throw new \RuntimeException(sprintf('Unknown field "%s"', $fieldName));
+        return $this->modelManager->translateFieldName($query->getModelName(), $fieldName);
     }
 }

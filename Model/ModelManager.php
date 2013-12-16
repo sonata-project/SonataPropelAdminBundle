@@ -542,6 +542,37 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
+     * Translates a field name to its phpName equivalent.
+     *
+     * @param string $class     The FQCN of the model.
+     * @param string $fieldName The field name to translate.
+     *
+     * @return string
+     */
+    public function translateFieldName($class, $fieldName)
+    {
+        $tableMap = $this->getTable($class);
+
+        // the field is just a column, the translation is easy
+        if (($column = $this->getColumn($class, $fieldName)) !== null) {
+            return $column->getPhpName();
+        }
+
+        // the field name might refer to a relation
+        if ($tableMap->hasRelation($relationName = ucfirst($fieldName))) {
+            $relation = $tableMap->getRelation($relationName);
+
+            if (!$relation->isComposite()) {
+                $columns = $relation->getLeftColumns();
+
+                return $columns[0]->getPhpName();
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Unknown field "%s"', $fieldName));
+    }
+
+    /**
      * @param string $class
      *
      * @return \TableMap

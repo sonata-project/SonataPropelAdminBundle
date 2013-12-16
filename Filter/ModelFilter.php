@@ -11,6 +11,9 @@
 
 namespace Sonata\PropelAdminBundle\Filter;
 
+use Criteria;
+use PropelObjectCollection;
+
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 /**
@@ -30,10 +33,10 @@ class ModelFilter extends AbstractFilter
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
-        if ($value['value'] instanceof \PropelObjectCollection) {
-            $query->filterBy($field, $value['value'], \Criteria::IN);
+        if ($value['value'] instanceof PropelObjectCollection) {
+            $query->filterBy($field, $value['value'], Criteria::IN);
         } else {
-            $query->filterBy($field, $value['value']->getId(), \Criteria::EQUAL);
+            $query->filterBy($field, $value['value']->getId(), Criteria::EQUAL);
         }
     }
 
