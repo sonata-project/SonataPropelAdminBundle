@@ -12,7 +12,7 @@
 namespace Sonata\PropelAdminBundle\Filter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Form\Type\BooleanType;
+use Sonata\CoreBundle\Form\Type\BooleanType;
 
 use ModelCriteria;
 

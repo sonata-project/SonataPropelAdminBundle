@@ -11,7 +11,7 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
-use Sonata\AdminBundle\Form\Type\BooleanType;
+use Sonata\CoreBundle\Form\Type\BooleanType;
 
 use \ModelCriteria;
 
@@ -37,7 +37,7 @@ class BooleanFilterTest extends AbstractFilterTest
         return array(
             // data, comparisonType, normalizedData, comparisonOperator, filterOptions
             array($yes, null,   true, ModelCriteria::EQUAL,     array()),
-            array($no,  null,   true, ModelCriteria::NOT_EQUAL,     array()),
+            array($no,  null,   true, ModelCriteria::NOT_EQUAL, array()),
         );
     }
 }
