@@ -66,6 +66,11 @@ class DatagridBuilder implements DatagridBuilderInterface
 
         // filters are not required by default
         $fieldDescription->mergeOption('field_options', array('required' => false));
+
+        // text fields are searchable by default
+        if ($fieldDescription->getType() === 'text') {
+            $fieldDescription->setOption('global_search', $fieldDescription->getOption('global_search', true));
+        }
     }
 
     /**
