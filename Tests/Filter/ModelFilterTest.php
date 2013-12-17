@@ -11,6 +11,7 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Sonata\PropelAdminBundle\Filter\ModelFilter;
 
 use \Criteria;
@@ -40,9 +41,13 @@ class ModelFilterTest extends AbstractFilterTest
         $dataCollection = array('value' => $collection);
 
         return array(
-            //    data,             comparisonType, normalizedData, comparisonOperator, filterOptions
-            array($data,            null,           42,             Criteria::EQUAL,    array()),
-            array($dataCollection,  null,           $collection,    Criteria::IN,       array()),
+            //    data,                 comparisonType,                 normalizedData, comparisonOperator, filterOptions
+            array($data,                ChoiceType::TYPE_CONTAINS,      $user,          Criteria::IN,       array()),
+            array($data,                ChoiceType::TYPE_NOT_CONTAINS,  $user,          Criteria::NOT_IN,   array()),
+            array($data,                ChoiceType::TYPE_EQUAL,         $user,          Criteria::EQUAL,    array()),
+            array($data,                null,                           $user,          Criteria::IN,       array()),
+            array(array('value' => 42), null,                           42,             Criteria::IN,       array()),
+            array($dataCollection,      null,                           $collection,    Criteria::IN,       array()),
         );
     }
 }
