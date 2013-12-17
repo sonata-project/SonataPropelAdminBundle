@@ -35,6 +35,9 @@ class SonataPropelAdminExtension extends AbstractSonataAdminExtension
         $processor = new Processor();
         $config = $processor->processConfiguration($configuration, $config);
 
+        // save the form themes
+        $container->setParameter('sonata_propel_admin.templates', $config['templates']);
+
         // define the templates
         $container->getDefinition('sonata.admin.builder.propel_list')
             ->replaceArgument(1, $config['templates']['types']['list']);
