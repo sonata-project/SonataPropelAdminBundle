@@ -50,9 +50,9 @@ class StringFilter extends AbstractFilter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_choice', array(
-            'field_type' => $this->getFieldType(),
+            'field_type'    => $this->getFieldType(),
             'field_options' => $this->getFieldOptions(),
-            'label' => $this->getLabel(),
+            'label'         => $this->getLabel(),
         ));
     }
 
@@ -66,9 +66,9 @@ class StringFilter extends AbstractFilter
     protected function getCriteriaMap()
     {
         return array(
-            ChoiceType::TYPE_CONTAINS => ModelCriteria::LIKE,
-            ChoiceType::TYPE_NOT_CONTAINS => ModelCriteria::NOT_LIKE,
-            ChoiceType::TYPE_EQUAL => ModelCriteria::EQUAL,
+            ChoiceType::TYPE_CONTAINS       => ModelCriteria::LIKE,
+            ChoiceType::TYPE_NOT_CONTAINS   => ModelCriteria::NOT_LIKE,
+            ChoiceType::TYPE_EQUAL          => ModelCriteria::EQUAL,
         );
     }
 }

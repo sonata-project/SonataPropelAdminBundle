@@ -294,6 +294,55 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected['association_mapping'], $fieldDescription->getAssociationMapping());
     }
 
+    /**
+     * @dataProvider translatableFieldNamesProvider
+     */
+    public function testTranslateFieldNameWithValidData($modelManager, $className, $fieldName, $expectedPhpName)
+    {
+        $phpName = $modelManager->translateFieldName($className, $fieldName);
+
+        $this->assertSame($expectedPhpName, $phpName);
+    }
+
+    public function translatableFieldNamesProvider()
+    {
+        $dbMap = new \DatabaseMap('default');
+
+        $authorTableMap = new \TableMap();
+        $authorTableMap->setName('author');
+        $authorTableMap->setPhpName('Author');
+        $authorTableMap->setClassname('Acme\\DemoBundle\\Model\\Author');
+        $authorTableMap->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $dbMap->addTableObject($authorTableMap);
+
+        $bookTableMap = new \TableMap();
+        $bookTableMap->setName('book');
+        $bookTableMap->setPhpName('Book');
+        $bookTableMap->setClassname('Acme\\DemoBundle\\Model\\Book');
+        $bookTableMap->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $bookTableMap->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
+        $bookTableMap->addColumn('SLUG', 'Slug', 'VARCHAR', false, 255, null);
+        $bookTableMap->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'author', 'id', true, null, null);
+        $dbMap->addTableObject($bookTableMap);
+
+        $bookTableMap->addRelation('Author', 'Acme\\DemoBundle\\Model\\Author', \RelationMap::MANY_TO_ONE, array('AUTHOR_ID' => 'ID', ), 'CASCADE', null);
+
+        $manager = new TestableModelManager();
+        $manager->addTable('Acme\\DemoBundle\\Model\\Author', $authorTableMap);
+        $manager->addTable('Acme\\DemoBundle\\Model\\Book', $bookTableMap);
+
+        return array(
+            array($manager, 'Acme\\DemoBundle\\Model\\Author', 'ID', 'Id'),
+            array($manager, 'Acme\\DemoBundle\\Model\\Author', 'Id', 'Id'),
+            array($manager, 'Acme\\DemoBundle\\Model\\Author', 'id', 'Id'),
+
+            array($manager, 'Acme\\DemoBundle\\Model\\Book', 'name', 'Name'),
+
+            array($manager, 'Acme\\DemoBundle\\Model\\Book', 'author', 'AuthorId'),
+            array($manager, 'Acme\\DemoBundle\\Model\\Book', 'Author', 'AuthorId'),
+        );
+    }
+
     public function validFieldNameProvider()
     {
         $className = '\Foo\Book';

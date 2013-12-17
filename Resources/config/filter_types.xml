@@ -5,33 +5,37 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="sonata.admin.propel.filter.type.string" class="Sonata\PropelAdminBundle\Filter\StringFilter">
+        <service id="sonata.admin.propel.filter" abstract="true">
+            <argument type="service" id="sonata.admin.manager.propel" />
+        </service>
+
+        <service id="sonata.admin.propel.filter.type.string" class="Sonata\PropelAdminBundle\Filter\StringFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="string" />
             <tag name="sonata.admin.filter.type" alias="varchar" />
             <tag name="sonata.admin.filter.type" alias="longvarchar" />
             <tag name="sonata.admin.filter.type" alias="text" />
         </service>
-        <service id="sonata.admin.propel.filter.type.number" class="Sonata\PropelAdminBundle\Filter\NumberFilter">
+        <service id="sonata.admin.propel.filter.type.number" class="Sonata\PropelAdminBundle\Filter\NumberFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="number" />
             <tag name="sonata.admin.filter.type" alias="integer" />
         </service>
-        <service id="sonata.admin.propel.filter.type.model" class="Sonata\PropelAdminBundle\Filter\ModelFilter">
+        <service id="sonata.admin.propel.filter.type.model" class="Sonata\PropelAdminBundle\Filter\ModelFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="model" />
         </service>
-        <service id="sonata.admin.propel.filter.type.boolean" class="Sonata\PropelAdminBundle\Filter\BooleanFilter">
+        <service id="sonata.admin.propel.filter.type.boolean" class="Sonata\PropelAdminBundle\Filter\BooleanFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="checkbox" />
             <tag name="sonata.admin.filter.type" alias="boolean" />
         </service>
-        <service id="sonata.admin.propel.filter.type.date" class="Sonata\PropelAdminBundle\Filter\DateFilter">
+        <service id="sonata.admin.propel.filter.type.date" class="Sonata\PropelAdminBundle\Filter\DateFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="date" />
         </service>
-        <service id="sonata.admin.orm.filter.type.date_range" class="Sonata\PropelAdminBundle\Filter\DateRangeFilter">
+        <service id="sonata.admin.propel.filter.type.date_range" class="Sonata\PropelAdminBundle\Filter\DateRangeFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="date_range" />
         </service>
-        <service id="sonata.admin.orm.filter.type.datetime" class="Sonata\PropelAdminBundle\Filter\DateTimeFilter">
+        <service id="sonata.admin.propel.filter.type.datetime" class="Sonata\PropelAdminBundle\Filter\DateTimeFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="datetime" />
         </service>
-        <service id="sonata.admin.orm.filter.type.datetime_range" class="Sonata\PropelAdminBundle\Filter\DateTimeRangeFilter">
+        <service id="sonata.admin.propel.filter.type.datetime_range" class="Sonata\PropelAdminBundle\Filter\DateTimeRangeFilter" parent="sonata.admin.propel.filter">
             <tag name="sonata.admin.filter.type" alias="datetime_range" />
         </service>
     </services>

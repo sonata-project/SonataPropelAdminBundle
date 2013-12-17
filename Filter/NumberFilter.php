@@ -26,20 +26,20 @@ class NumberFilter extends AbstractFilter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_number', array(
-            'field_type' => $this->getFieldType(),
+            'field_type'    => $this->getFieldType(),
             'field_options' => $this->getFieldOptions(),
-            'label' => $this->getLabel(),
+            'label'         => $this->getLabel(),
         ));
     }
 
     protected function getCriteriaMap()
     {
         return array(
-            NumberType::TYPE_GREATER_EQUAL => ModelCriteria::GREATER_EQUAL,
-            NumberType::TYPE_GREATER_THAN => ModelCriteria::GREATER_THAN,
-            NumberType::TYPE_EQUAL => ModelCriteria::EQUAL,
-            NumberType::TYPE_LESS_EQUAL => ModelCriteria::LESS_EQUAL,
-            NumberType::TYPE_LESS_THAN => ModelCriteria::LESS_THAN,
+            NumberType::TYPE_GREATER_EQUAL  => ModelCriteria::GREATER_EQUAL,
+            NumberType::TYPE_GREATER_THAN   => ModelCriteria::GREATER_THAN,
+            NumberType::TYPE_EQUAL          => ModelCriteria::EQUAL,
+            NumberType::TYPE_LESS_EQUAL     => ModelCriteria::LESS_EQUAL,
+            NumberType::TYPE_LESS_THAN      => ModelCriteria::LESS_THAN,
         );
     }
 }
