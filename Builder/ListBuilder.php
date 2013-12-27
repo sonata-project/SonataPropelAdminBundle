@@ -72,9 +72,24 @@ class ListBuilder implements ListBuilderInterface
     {
         $fieldDescription->setAdmin($admin);
 
+        // define the template to use
         if (!$fieldDescription->getTemplate()) {
             $fieldDescription->setTemplate($this->getTemplate($fieldDescription->getType()));
         }
+
+        // define sort column & parameters
+        if ($fieldDescription->getOption('sortable') !== false) {
+            $fieldDescription->setOption('sortable', $fieldDescription->getOption('sortable', true));
+            $fieldDescription->setOption('sort_parent_association_mappings', $fieldDescription->getOption('sort_parent_association_mappings', $fieldDescription->getParentAssociationMappings()));
+            $fieldDescription->setOption('sort_field_mapping', $fieldDescription->getOption('sort_field_mapping', $fieldDescription->getFieldMapping()));
+        }
+
+        // define the sort order
+        $fieldDescription->setOption('_sort_order', $fieldDescription->getOption('_sort_order', 'ASC'));
+
+        // define code and label
+        $fieldDescription->setOption('code', $fieldDescription->getOption('code', $fieldDescription->getName()));
+        $fieldDescription->setOption('label', $fieldDescription->getOption('label', $fieldDescription->getName()));
     }
 
     /**

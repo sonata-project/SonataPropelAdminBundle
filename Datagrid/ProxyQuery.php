@@ -38,6 +38,8 @@ class ProxyQuery implements ProxyQueryInterface
      */
     protected $result;
 
+    protected $parameterUniqueId = 0;
+
     /**
      * Constructor.
      *
@@ -58,6 +60,10 @@ class ProxyQuery implements ProxyQueryInterface
      */
     public function execute(array $params = array(), $hydrationMode = null)
     {
+        if ($sortBy = $this->getSortBy()) {
+            $this->query->orderBy($sortBy, $this->getSortOrder());
+        }
+
         $this->result = $this->query->find();
 
         return $this->result;
@@ -115,7 +121,8 @@ class ProxyQuery implements ProxyQueryInterface
 
     public function setSortBy($parentAssociationMappings, $fieldMapping)
     {
-        $this->sortBy = array($parentAssociationMappings, $fieldMapping);
+        // @todo: handle $parentAssociationMappings
+        $this->sortBy = $fieldMapping['fieldName'];
 
         return $this;
     }
@@ -173,7 +180,7 @@ class ProxyQuery implements ProxyQueryInterface
      */
     public function getUniqueParameterId()
     {
-        // TODO: Implement getUniqueParameterId() method.
+        return $this->uniqueParameterId++;
     }
 
     /**
