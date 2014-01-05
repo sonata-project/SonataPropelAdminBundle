@@ -92,6 +92,11 @@ class ModelManager implements ModelManagerInterface
 
         if ($column = $this->getColumn($class, $name)) {
             $fieldDescription->setType($column->getType());
+            $fieldDescription->setFieldMapping(array(
+                'id'        => $column->isPrimaryKey(),
+                'fieldName' => $column->getPhpName(),
+                'type'      => $column->getType(),
+            ));
         }
 
         return $fieldDescription;
@@ -413,8 +418,21 @@ class ModelManager implements ModelManagerInterface
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
     {
-        // TODO: Implement getSortParameters() method.
-        return array();
+        $values = $datagrid->getValues();
+
+        if ($fieldDescription->getName() === $values['_sort_by']->getName() || $values['_sort_by']->getName() === $fieldDescription->getOption('sortable')) {
+            if ($values['_sort_order'] == 'ASC') {
+                $values['_sort_order'] = 'DESC';
+            } else {
+                $values['_sort_order'] = 'ASC';
+            }
+        } else {
+            $values['_sort_order'] = 'ASC';
+        }
+
+        $values['_sort_by'] = is_string($fieldDescription->getOption('sortable')) ? $fieldDescription->getOption('sortable') :  $fieldDescription->getName();
+
+        return array('filter' => $values);
     }
 
     /**
@@ -425,9 +443,10 @@ class ModelManager implements ModelManagerInterface
     public function getDefaultSortValues($class)
     {
         return array(
-            '_sort_order' => 'ASC',
-            '_sort_by' => null,
-            '_page' => 1,
+            '_sort_order'   => 'ASC',
+            // @note: _sort_by is a string as we do not handle multiple PK yet
+            '_sort_by'      => $this->getModelIdentifier($class),
+            '_page'         => 1,
         );
     }
 
