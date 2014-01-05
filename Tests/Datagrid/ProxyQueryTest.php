@@ -69,4 +69,53 @@ class ProxyQueryTest extends WebTestCase
         $proxy = new ProxyQuery($query);
         $proxy->filterBy('Slug', 'slug');
     }
+
+    public function testOrderByIsntCalledIfNotSet()
+    {
+        $query = $this->getMockBuilder('\Sonata\TestBundle\Model\BlogPostQuery', array('find'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $query
+            ->expects($this->once())
+            ->method('find');
+        $query
+            ->expects($this->never())
+            ->method('orderBy');
+
+        $proxy = new ProxyQuery($query);
+        $proxy->execute();
+    }
+
+    public function testOrderByIsCalledIfSet()
+    {
+        $query = $this->getMockBuilder('\Sonata\TestBundle\Model\BlogPostQuery', array('find', 'orderBy'))
+            ->disableOriginalConstructor()
+            ->getMock();
+        $query
+            ->expects($this->once())
+            ->method('find');
+        $query
+            ->expects($this->once())
+            ->method('orderBy')
+            ->with('Slug', 'ASC');
+
+        $proxy = new ProxyQuery($query);
+        $proxy->setSortBy(/* ignored */ null, array('fieldName' => 'Slug'));
+        $proxy->setSortOrder('ASC');
+
+        $proxy->execute();
+    }
+
+    public function testGetUniqueParameterId()
+    {
+        $query = $this->getMockBuilder('\Sonata\TestBundle\Model\BlogPostQuery', array('find', 'orderBy'))
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $proxy = new ProxyQuery($query);
+
+        $this->assertSame(0, $proxy->getUniqueParameterId());
+        $this->assertSame(1, $proxy->getUniqueParameterId());
+        $this->assertSame(2, $proxy->getUniqueParameterId());
+    }
 }

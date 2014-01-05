@@ -12,6 +12,7 @@
 namespace Sonata\PropelAdminBundle\Tests\Model;
 
 use Exporter\Source\PropelCollectionSourceIterator;
+use Sonata\PropelAdminBundle\Admin\FieldDescription;
 use Sonata\PropelAdminBundle\Model\ModelManager;
 
 /**
@@ -292,6 +293,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected['type'], $fieldDescription->getType());
         $this->assertEquals(array_merge(array('placeholder' => 'short_object_description_placeholder'), $options), $fieldDescription->getOptions());
         $this->assertEquals($expected['association_mapping'], $fieldDescription->getAssociationMapping());
+        $this->assertEquals($expected['field_mapping'], $fieldDescription->getFieldMapping());
     }
 
     /**
@@ -379,19 +381,72 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         // columns
         $titleColumn = new \ColumnMap('Title', $emptyTableMap);
         $titleColumn->setType('text');
+        $titleColumn->setPhpName('Title');
+
+        $titleFieldMapping = array('id' => false, 'type' => 'text', 'fieldName' => 'Title');
 
         return array(
             //    tableMap,             columns,                className,    fieldName,    options, expected
             // no error is thrown if the column is not found
-            array(null,                 array(),                $className,   'Title',      $options, array('type' => null, 'association_mapping' => null)),
+            array(null,                 array(),                $className,   'Title',      $options, array('type' => null, 'association_mapping' => null, 'field_mapping' => null)),
             // column not found, type remains empty
-            array($emptyTableMap,       array(),                $className,   'Title',      $options, array('type' => null, 'association_mapping' => null)),
+            array($emptyTableMap,       array(),                $className,   'Title',      $options, array('type' => null, 'association_mapping' => null, 'field_mapping' => null)),
             // column found, type filled
-            array($emptyTableMap,       array($titleColumn),    $className,   'Title',      $options, array('type' => 'text', 'association_mapping' => null)),
+            array($emptyTableMap,       array($titleColumn),    $className,   'Title',      $options, array('type' => 'text', 'association_mapping' => null, 'field_mapping' => $titleFieldMapping)),
             // test relations
-            array($relationsTableMap,   array($titleColumn),    $className,   'MainAuthor', $options, array('type' => \RelationMap::MANY_TO_ONE, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::MANY_TO_ONE))),
-            array($relationsTableMap,   array($titleColumn),    $className,   'Authors',    $options, array('type' => \RelationMap::ONE_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::ONE_TO_MANY))),
-            array($relationsTableMap,   array($titleColumn),    $className,   'Resellers',  $options, array('type' => \RelationMap::MANY_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Reseller', 'type' => \RelationMap::MANY_TO_MANY))),
+            array($relationsTableMap,   array($titleColumn),    $className,   'MainAuthor', $options, array('type' => \RelationMap::MANY_TO_ONE, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::MANY_TO_ONE), 'field_mapping' => null)),
+            array($relationsTableMap,   array($titleColumn),    $className,   'Authors',    $options, array('type' => \RelationMap::ONE_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Author', 'type' => \RelationMap::ONE_TO_MANY), 'field_mapping' => null)),
+            array($relationsTableMap,   array($titleColumn),    $className,   'Resellers',  $options, array('type' => \RelationMap::MANY_TO_MANY, 'association_mapping' => array('targetEntity' => '\Foo\Reseller', 'type' => \RelationMap::MANY_TO_MANY), 'field_mapping' => null)),
+        );
+    }
+
+    public function testGetDefaultSortValues()
+    {
+        $manager = new TestableModelManager();
+        $manager->modelIdentifier = 'Id';
+
+        $this->assertSame(array(
+            '_sort_order'   => 'ASC',
+            '_sort_by'      => 'Id',
+            '_page'         => 1,
+        ), $manager->getDefaultSortValues('foo'));
+    }
+
+    /**
+     * @dataProvider testGetSortParametersProvider
+     */
+    public function testGetSortParameters($field, $values, $expectedSortParameters)
+    {
+        $manager = new ModelManager();
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid
+            ->expects($this->once())
+            ->method('getValues')
+            ->will($this->returnValue($values));
+
+        $this->assertSame(array('filter' => $expectedSortParameters), $manager->getSortParameters($field, $datagrid));
+    }
+
+    public function testGetSortParametersProvider()
+    {
+        $field = new FieldDescription();
+        $field->setName('slug');
+
+        $slugSortField = new FieldDescription();
+        $slugSortField->setName('slug');
+
+        $slugSortFieldWithSortable = new FieldDescription();
+        $slugSortFieldWithSortable->setName('SuperSlug');
+        $slugSortFieldWithSortable->setOption('sortable', 'slug');
+
+        $titleSortField = new FieldDescription();
+        $titleSortField->setName('title');
+
+        return array(
+            array( $field, array('_sort_by' => $slugSortField, '_sort_order' => 'ASC'), array('_sort_by' => 'slug', '_sort_order' => 'DESC') ),
+            array( $field, array('_sort_by' => $slugSortField, '_sort_order' => 'DESC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC') ),
+            array( $field, array('_sort_by' => $titleSortField, '_sort_order' => 'ASC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC') ),
+            array( $field, array('_sort_by' => $slugSortFieldWithSortable, '_sort_order' => 'DESC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC') ),
         );
     }
 }
@@ -405,6 +460,8 @@ class BaseObjectMock extends \BaseObject
 
 class TestableModelManager extends ModelManager
 {
+    public $modelIdentifier;
+
     public function addTable($class, $tableMap)
     {
         $this->cache[$class] = $tableMap;
@@ -413,5 +470,14 @@ class TestableModelManager extends ModelManager
     public function addColumn($class, $property, $columnMap)
     {
         $this->cache[$class.'::'.$property] = $columnMap;
+    }
+
+    public function getModelIdentifier($class)
+    {
+        if ($this->modelIdentifier !== null) {
+            return $this->modelIdentifier;
+        }
+
+        return parent::getModelIdentifier($class);
     }
 }

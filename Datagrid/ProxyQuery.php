@@ -38,7 +38,7 @@ class ProxyQuery implements ProxyQueryInterface
      */
     protected $result;
 
-    protected $parameterUniqueId = 0;
+    protected $uniqueParameterId = 0;
 
     /**
      * Constructor.
