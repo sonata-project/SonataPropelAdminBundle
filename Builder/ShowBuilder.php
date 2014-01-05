@@ -13,40 +13,15 @@ namespace Sonata\PropelAdminBundle\Builder;
 
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-
-use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class ShowBuilder implements ShowBuilderInterface
+class ShowBuilder extends BaseBuilder implements ShowBuilderInterface
 {
-    /**
-     * @var TypeGuesserInterface
-     */
-    protected $guesser;
-
-    /**
-     * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface $guesser
-     */
-    public function __construct(TypeGuesserInterface $guesser)
-    {
-        $this->guesser   = $guesser;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return void
-     */
-    public function getBaseList(array $options = array())
-    {
-        // TODO: Implement getBaseList() method.
-    }
-
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
      * @param null                                                 $type
@@ -79,5 +54,18 @@ class ShowBuilder implements ShowBuilderInterface
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
         $fieldDescription->setAdmin($admin);
+
+        if (!$fieldDescription->getType()) {
+            throw new \RuntimeException(sprintf('Please define a type for field `%s` in `%s`', $fieldDescription->getName(), get_class($admin)));
+        }
+
+        // define the template to use
+        if (!$fieldDescription->getTemplate()) {
+            $fieldDescription->setTemplate($this->getTemplate($fieldDescription->getType()));
+        }
+
+        // define code and label
+        $fieldDescription->setOption('code', $fieldDescription->getOption('code', $fieldDescription->getName()));
+        $fieldDescription->setOption('label', $fieldDescription->getOption('label', $fieldDescription->getName()));
     }
 }

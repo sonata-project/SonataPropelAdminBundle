@@ -16,40 +16,12 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class ListBuilder implements ListBuilderInterface
+class ListBuilder extends BaseBuilder implements ListBuilderInterface
 {
-    /**
-     * @var TypeGuesserInterface
-     */
-    protected $guesser;
-
-    protected $templates = array();
-
-    /**
-     * @param TypeGuesserInterface $guesser
-     * @param array                $templates
-     */
-    public function __construct(TypeGuesserInterface $guesser, array $templates = array())
-    {
-        $this->guesser   = $guesser;
-        $this->templates = $templates;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionCollection
-     */
-    public function getBaseList(array $options = array())
-    {
-        return new FieldDescriptionCollection();
-    }
-
     /**
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionCollection $list
      * @param null|mixed                                           $type
@@ -70,6 +42,10 @@ class ListBuilder implements ListBuilderInterface
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
+        if ($fieldDescription->getName() === '_action') {
+            $this->buildActionFieldDescription($fieldDescription);
+        }
+
         $fieldDescription->setAdmin($admin);
 
         // define the template to use
@@ -108,18 +84,39 @@ class ListBuilder implements ListBuilderInterface
     }
 
     /**
-     * Finds the template to use for a given field type.
+     * @param FieldDescriptionInterface $fieldDescription
      *
-     * @param string $type
-     *
-     * @return string
+     * @return FieldDescriptionInterface
      */
-    protected function getTemplate($type)
+    public function buildActionFieldDescription(FieldDescriptionInterface $fieldDescription)
     {
-        if (!isset($this->templates[$type])) {
-            return null;
+        if (null === $fieldDescription->getTemplate()) {
+            $fieldDescription->setTemplate('SonataAdminBundle:CRUD:list__action.html.twig');
         }
 
-        return $this->templates[$type];
+        if (null === $fieldDescription->getType()) {
+            $fieldDescription->setType('action');
+        }
+
+        if (null === $fieldDescription->getOption('name')) {
+            $fieldDescription->setOption('name', 'Action');
+        }
+
+        if (null === $fieldDescription->getOption('code')) {
+            $fieldDescription->setOption('code', 'Action');
+        }
+
+        if (null !== $fieldDescription->getOption('actions')) {
+            $actions = $fieldDescription->getOption('actions');
+            foreach ($actions as $k => $action) {
+                if (!isset($action['template'])) {
+                    $actions[$k]['template'] = sprintf('SonataAdminBundle:CRUD:list__action_%s.html.twig', $k);
+                }
+            }
+
+            $fieldDescription->setOption('actions', $actions);
+        }
+
+        return $fieldDescription;
     }
 }
