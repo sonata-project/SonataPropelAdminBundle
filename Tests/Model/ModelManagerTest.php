@@ -449,6 +449,27 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
             array( $field, array('_sort_by' => $slugSortFieldWithSortable, '_sort_order' => 'DESC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC') ),
         );
     }
+
+    public function testGetPaginationParameters()
+    {
+        $field = new FieldDescription();
+        $field->setName('slug');
+
+        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid
+            ->expects($this->once())
+            ->method('getValues')
+            ->will($this->returnValue(array('_sort_by' => $field)));
+
+        $manager = new ModelManager();
+
+        $this->assertSame(array(
+            'filter' => array(
+                '_sort_by'  => 'slug',
+                '_page'     => 42,
+            ),
+        ), $manager->getPaginationParameters($datagrid, 42));
+    }
 }
 
 class BaseObjectMock extends \BaseObject
