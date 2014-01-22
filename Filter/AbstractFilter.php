@@ -45,8 +45,10 @@ abstract class AbstractFilter extends Filter
     {
         $map = $this->getCriteriaMap();
 
+        $comparison = (!empty($map[$value['type']])) ? $map[$value['type']] : '';
+
         /* @var $query ModelCriteria */
-        $query->filterBy($field, sprintf($this->getOption('format', '%s'), $value['value']), $map[$value['type']]);
+        $query->filterBy($field, sprintf($this->getOption('format', '%s'), $value['value']), $comparison);
     }
 
     /**
