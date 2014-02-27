@@ -11,7 +11,6 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Model;
 
-use Exporter\Source\PropelCollectionSourceIterator;
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
 use Sonata\PropelAdminBundle\Model\ModelManager;
 
@@ -472,6 +471,9 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 class BaseObjectMock extends \BaseObject
 {
     public function getPrimaryKey()
@@ -479,6 +481,9 @@ class BaseObjectMock extends \BaseObject
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 class TestableModelManager extends ModelManager
 {
     public $modelIdentifier;
