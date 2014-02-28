@@ -18,3 +18,4 @@ Reference Guide
    reference/installation
    reference/admin
    reference/model_filter
+   reference/templates
