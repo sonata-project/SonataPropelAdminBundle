@@ -14,6 +14,7 @@ env:
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
   - composer install --dev --prefer-source
+  - sudo pip install -r Resources/doc/requirements.txt
 
 script: ./vendor/bin/phpunit && cd Resources/doc && sphinx-build -W -b html -d _build/doctrees . _build/html
 
