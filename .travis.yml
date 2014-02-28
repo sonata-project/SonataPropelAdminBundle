@@ -13,9 +13,9 @@ env:
 
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
-  - composer install --dev
+  - composer install --dev --prefer-source
 
-script: ./vendor/bin/phpunit
+script: ./vendor/bin/phpunit && cd Resources/doc && sphinx-build -W -b html -d _build/doctrees . _build/html
 
 notifications:
     webhooks: http://sonata-project.org/bundles/propel-admin/master/travis
