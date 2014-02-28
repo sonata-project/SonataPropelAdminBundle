@@ -38,6 +38,7 @@ class StringFilterTest extends AbstractFilterTest
 
         return array(
             // data, comparisonType, normalizedData, comparisonOperator, filterOptions
+            array($data, '',                            $normalizedSearch, ModelCriteria::LIKE,     array()),
             array($data, null,                          $normalizedSearch, ModelCriteria::LIKE,     array()),
             array($data, ChoiceType::TYPE_CONTAINS,     $normalizedSearch, ModelCriteria::LIKE,     array()),
             array($data, ChoiceType::TYPE_EQUAL,        $search,           ModelCriteria::EQUAL,    array()),
