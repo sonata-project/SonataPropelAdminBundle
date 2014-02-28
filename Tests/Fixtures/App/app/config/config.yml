@@ -19,6 +19,7 @@ framework:
 # propel configuration
 propel:
     build_properties:
+        propel.database: sqlite
         propel.php.dir: "%kernel.root_dir%/../src/Sonata/TestBundle/Model"
 
     path:       "%kernel.root_dir%/../../../../vendor/propel/propel1"
@@ -26,11 +27,7 @@ propel:
     logging:    %kernel.debug%
     dbal:
         driver:     sqlite
-        user:       root
-        password:   ~
-        dsn:        sqlite:host=localhost;dbname=sonate_propel_bundle;charset=UTF8
-        options:    {}
-        attributes: {}
+        dsn:        sqlite:host=sonata_test.db
 
 sonata_block:
     default_contexts: [cms]

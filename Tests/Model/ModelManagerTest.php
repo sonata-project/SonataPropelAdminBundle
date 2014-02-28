@@ -290,7 +290,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Sonata\PropelAdminBundle\Admin\FieldDescription', $fieldDescription);
         $this->assertSame($fieldName, $fieldDescription->getName());
         $this->assertSame($expected['type'], $fieldDescription->getType());
-        $this->assertEquals(array_merge(array('placeholder' => 'short_object_description_placeholder'), $options), $fieldDescription->getOptions());
+        $this->assertEquals(array_merge(array('placeholder' => 'short_object_description_placeholder', 'link_parameters' => array()), $options), $fieldDescription->getOptions());
         $this->assertEquals($expected['association_mapping'], $fieldDescription->getAssociationMapping());
         $this->assertEquals($expected['field_mapping'], $fieldDescription->getFieldMapping());
     }
