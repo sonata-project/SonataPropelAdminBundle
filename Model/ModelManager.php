@@ -479,7 +479,10 @@ class ModelManager implements ModelManagerInterface
      */
     public function executeQuery($query)
     {
-        // TODO: Implement executeQuery() method.
+        if ($query instanceof ProxyQueryInterface ){
+            return $query->execute();
+        }
+        return $query->find();
     }
 
     /**
