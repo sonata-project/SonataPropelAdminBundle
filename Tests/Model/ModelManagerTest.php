@@ -469,6 +469,30 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
             ),
         ), $manager->getPaginationParameters($datagrid, 42));
     }
+
+    public function testExecuteQueryWithProxyQuery()
+    {
+        $proxyQuery = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $proxyQuery
+            ->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue('result'));
+
+        $manager = new ModelManager();
+        $this->assertEquals('result', $manager->executeQuery($proxyQuery));
+    }
+
+    public function testExecuteQueryWithModelCriteria()
+    {
+        $query = $this->getMockBuilder('\ModelCriteria')->disableOriginalConstructor()->getMock();
+        $query
+            ->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue('result'));
+
+        $manager = new ModelManager();
+        $this->assertEquals('result', $manager->executeQuery($query));
+    }
 }
 
 /**

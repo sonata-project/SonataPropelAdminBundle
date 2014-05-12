@@ -474,14 +474,13 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param mixed $query
-     *
-     * @return void
      */
     public function executeQuery($query)
     {
         if ($query instanceof ProxyQueryInterface ){
             return $query->execute();
         }
+
         return $query->find();
     }
 
