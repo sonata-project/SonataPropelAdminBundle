@@ -4,7 +4,7 @@ namespace Sonata\PropelAdminBundle\Tests\Functionnal;
 
 class ExportTest extends WebTestCase
 {
-    protected $expected_formats = array('json', 'xml', 'csv', 'xls');
+    protected $expected_formats = array('JSON', 'XML', 'CSV', 'XLS');
 
     public function testExportLinksAreShownOnDashboard()
     {
@@ -40,6 +40,6 @@ class ExportTest extends WebTestCase
 
     protected function getExportLinksSelector()
     {
-        return '.sonata-ba-list .form-inline .pull-right a';
+        return '.box-body .form-inline .pull-right a';
     }
 }
