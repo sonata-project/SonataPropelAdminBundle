@@ -55,11 +55,12 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface  $guesser
      * @param boolean                                           $csrfTokenEnabled
      */
-    public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser, $csrfTokenEnabled)
+    public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser, $csrfTokenEnabled = true)
     {
         $this->formFactory = $formFactory;
         $this->filterFactory = $filterFactory;
         $this->guesser = $guesser;
+        $this->csrfTokenEnabled = $csrfTokenEnabled;
     }
 
     /**
