@@ -5,6 +5,9 @@ Propel Admin
 
 This bundle integrates the SonataAdminBundle with the Propel ORM project.
 
+Documentation
+------------
+
 Check out the documentation on [Resources/doc](https://github.com/sonata-project/SonataPropelAdminBundle/tree/master/Resources/doc)
 
 **Warning**: documentation files are not rendering correctly in Github (reStructuredText format)
