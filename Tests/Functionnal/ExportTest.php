@@ -14,7 +14,7 @@ class ExportTest extends WebTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         foreach ($this->expected_formats as $format) {
-            $this->assertCount(1, $crawler->filter(sprintf('%s:contains("%s")', $link_selector, $format), sprintf('The format %s is proposed', $format)));
+            $this->assertCount(1, $crawler->filter(sprintf('a:contains("%s")', $format), sprintf('The format %s is proposed', $format)));
         }
     }
 
