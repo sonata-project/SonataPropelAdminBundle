@@ -4,7 +4,7 @@ namespace Sonata\PropelAdminBundle\Tests\Functionnal;
 
 class ExportTest extends WebTestCase
 {
-    protected $expected_formats = array('JSON', 'XML', 'CSV', 'XLS');
+    protected $expected_formats = array('json', 'xml', 'csv', 'xls');
 
     public function testExportLinksAreShownOnDashboard()
     {
@@ -13,7 +13,6 @@ class ExportTest extends WebTestCase
         $link_selector = $this->getExportLinksSelector();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertCount(count($this->expected_formats), $crawler->filter($link_selector), 'There are 4 possible export formats');
         foreach ($this->expected_formats as $format) {
             $this->assertCount(1, $crawler->filter(sprintf('%s:contains("%s")', $link_selector, $format), sprintf('The format %s is proposed', $format)));
         }
@@ -40,6 +39,6 @@ class ExportTest extends WebTestCase
 
     protected function getExportLinksSelector()
     {
-        return '.box-body .form-inline .pull-right a';
+        return '.pull-right a';
     }
 }
