@@ -45,6 +45,7 @@
             <argument type="service" id="form.factory" />
             <argument type="service" id="sonata.admin.builder.filter.factory" />
             <argument type="service" id="sonata.admin.guesser.propel_datagrid_chain" />
+            <argument>%form.type_extension.csrf.enabled%</argument>
         </service>
 
         <service id="sonata.admin.guesser.propel_datagrid" class="Sonata\PropelAdminBundle\Guesser\FilterTypeGuesser">
