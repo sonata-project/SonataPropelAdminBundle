@@ -53,6 +53,7 @@ abstract class AbstractFilter extends Filter
         } else {
             $query->filterBy($field, sprintf($this->getOption('format', '%s'), $value['value']), $comparison);
         }
+        $query->_or();
     }
 
     /**
