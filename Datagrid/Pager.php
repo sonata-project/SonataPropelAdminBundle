@@ -62,7 +62,7 @@ class Pager extends BasePager
     protected function computeNbResults()
     {
         $nbResultsQuery = clone $this->getQuery();
-        $nbResultsQuery->limit(null)->offset(null);
+        //$nbResultsQuery->limit(null)->offset(null);
 
         return $nbResultsQuery->count();
     }

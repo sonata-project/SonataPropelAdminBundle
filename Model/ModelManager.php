@@ -13,6 +13,7 @@ namespace Sonata\PropelAdminBundle\Model;
 
 use Exporter\Source\PropelCollectionSourceIterator;
 
+use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -23,6 +24,7 @@ use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
 
 use BaseObject;
 use Persistent;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -276,6 +278,8 @@ class ModelManager implements ModelManagerInterface
         } elseif ($model instanceof BaseObject && method_exists($model, 'getPrimaryKey')) {
             // readonly="true" models
             $value = $model->getPrimaryKey();
+        } elseif ($model instanceof ActiveRecordInterface) {
+            $value = $model->getPrimaryKey();
         }
 
         return empty($value) ? null : (array) $value;
@@ -299,10 +303,13 @@ class ModelManager implements ModelManagerInterface
     {
         $fieldNames = array();
 
-        $peer = constant($class.'::PEER');
+        $class = str_replace("Model\\", "Model\\Base\\", $class) . 'Query';
+
+        $query = call_user_func($class.'::create');
+
 
         /* @var $tableMap \TableMap */
-        $tableMap = call_user_func(array($peer, 'getTableMap'));
+        $tableMap = call_user_func(array($query, 'getTableMap'));
         foreach ($tableMap->getPrimaryKeys() as $eachColumn) {
             $fieldNames[] = $eachColumn->getPhpName();
         }
@@ -317,7 +324,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function getNormalizedIdentifier($model)
     {
-        if ($model instanceof BaseObject || $model instanceof Persistent) {
+        if ($model instanceof BaseObject || $model instanceof Persistent || $model instanceof ActiveRecordInterface) {
             $values = $this->getIdentifierValues($model);
 
             if (empty($values)) {
@@ -630,9 +637,10 @@ class ModelManager implements ModelManagerInterface
             return $this->cache[$class.'::'.$property] = $table->getColumn($property);
         }
 
-        if ($table && $table->hasColumnByInsensitiveCase($property)) {
-            return $this->cache[$class.'::'.$property] = $table->getColumnByInsensitiveCase($property);
-        }
+        // TODO Alternative?
+        //if ($table && $table->hasColumnByInsensitiveCase($property)) {
+        //    return $this->cache[$class.'::'.$property] = $table->getColumnByInsensitiveCase($property);
+        //}
     }
 
     /**
