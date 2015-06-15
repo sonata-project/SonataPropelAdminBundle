@@ -12,7 +12,7 @@
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
 /**
- * DateTimeFilter tests
+ * DateTimeFilter tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */

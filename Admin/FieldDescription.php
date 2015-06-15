@@ -14,7 +14,7 @@ namespace Sonata\PropelAdminBundle\Admin;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 /**
- * Field description
+ * Field description.
  */
 class FieldDescription extends BaseFieldDescription
 {
@@ -27,7 +27,7 @@ class FieldDescription extends BaseFieldDescription
     }
 
     /**
-     * Define the association mapping definition
+     * Define the association mapping definition.
      *
      * @param array $associationMapping
      */
@@ -39,12 +39,12 @@ class FieldDescription extends BaseFieldDescription
 
         $this->associationMapping = $associationMapping;
 
-        $this->type        = $this->type ? : $associationMapping['type'];
-        $this->mappingType = $this->mappingType ? : $associationMapping['type'];
+        $this->type        = $this->type ?: $associationMapping['type'];
+        $this->mappingType = $this->mappingType ?: $associationMapping['type'];
     }
 
     /**
-     * return the related Target Entity
+     * return the related Target Entity.
      *
      * @return string|null
      */
@@ -54,15 +54,13 @@ class FieldDescription extends BaseFieldDescription
             return $this->associationMapping['targetEntity'];
         }
 
-        return null;
+        return;
     }
 
     /**
-     * set the field mapping information
+     * set the field mapping information.
      *
      * @param array $fieldMapping
-     *
-     * @return void
      */
     public function setFieldMapping($fieldMapping)
     {
@@ -72,12 +70,12 @@ class FieldDescription extends BaseFieldDescription
 
         $this->fieldMapping = $fieldMapping;
 
-        $this->type        = $this->type ? : $fieldMapping['type'];
-        $this->mappingType = $this->mappingType ? : $fieldMapping['type'];
+        $this->type        = $this->type ?: $fieldMapping['type'];
+        $this->mappingType = $this->mappingType ?: $fieldMapping['type'];
     }
 
     /**
-     * return true if the FieldDescription is linked to an identifier field
+     * return true if the FieldDescription is linked to an identifier field.
      *
      * @return bool
      */
@@ -87,7 +85,7 @@ class FieldDescription extends BaseFieldDescription
     }
 
     /**
-     * set the parent association mappings information
+     * set the parent association mappings information.
      *
      * @param array $parentAssociationMappings
      */
@@ -103,7 +101,7 @@ class FieldDescription extends BaseFieldDescription
     }
 
     /**
-     * return the value linked to the description
+     * return the value linked to the description.
      *
      * @param  $object
      *

@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Admin\Admin as BaseAdmin;
 abstract class Admin extends BaseAdmin
 {
     /**
-     * Returns the baseRoutePattern used to generate the routing information
+     * Returns the baseRoutePattern used to generate the routing information.
      *
      * @throws \RuntimeException
      *
@@ -40,7 +40,6 @@ abstract class Admin extends BaseAdmin
                         $this->urlize($matches[4], '-')
                     );
                 } else {
-
                     $this->baseRoutePattern = sprintf('/%s/%s/%s',
                         $this->urlize($matches[1], '-'),
                         $this->urlize($matches[2], '-'),
@@ -54,7 +53,7 @@ abstract class Admin extends BaseAdmin
     }
 
     /**
-     * Returns the baseRouteName used to generate the routing information
+     * Returns the baseRouteName used to generate the routing information.
      *
      * @throws \RuntimeException
      *
@@ -78,7 +77,6 @@ abstract class Admin extends BaseAdmin
                         $this->urlize($matches[4])
                     );
                 } else {
-
                     $this->baseRouteName = sprintf('admin_%s_%s_%s',
                         $this->urlize($matches[1]),
                         $this->urlize($matches[2]),

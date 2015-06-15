@@ -30,8 +30,8 @@ abstract class BaseBuilder
     protected $templates = array();
 
     /**
-     * @param TypeGuesserInterface  $guesser
-     * @param array                 $templates
+     * @param TypeGuesserInterface $guesser
+     * @param array                $templates
      */
     public function __construct(TypeGuesserInterface $guesser, array $templates = array())
     {
@@ -41,8 +41,6 @@ abstract class BaseBuilder
 
     /**
      * @param array $options
-     *
-     * @return void
      */
     public function getBaseList(array $options = array())
     {
@@ -59,7 +57,7 @@ abstract class BaseBuilder
     protected function getTemplate($type)
     {
         if (!isset($this->templates[$type])) {
-            return null;
+            return;
         }
 
         return $this->templates[$type];

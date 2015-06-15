@@ -13,7 +13,6 @@ namespace Sonata\PropelAdminBundle\Filter;
 
 use Criteria;
 use PropelObjectCollection;
-
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
@@ -23,14 +22,12 @@ use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 class ModelFilter extends AbstractFilter
 {
     /**
-     * Apply the filter to the ModelCriteria instance
+     * Apply the filter to the ModelCriteria instance.
      *
      * @param ProxyQueryInterface $query
      * @param string              $alias
      * @param string              $field
      * @param string              $value
-     *
-     * @return void
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
@@ -60,7 +57,7 @@ class ModelFilter extends AbstractFilter
     }
 
     /**
-     * Returns the main widget used to render the filter
+     * Returns the main widget used to render the filter.
      *
      * @return array
      */

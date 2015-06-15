@@ -17,16 +17,16 @@ namespace Sonata\PropelAdminBundle\Filter;
 class DateRangeFilter extends AbstractDateFilter
 {
     /**
-     * This filter has no range
+     * This filter has no range.
      *
-     * @var boolean
+     * @var bool
      */
     protected $range = true;
 
     /**
-     * This filter does not allow filtering by time
+     * This filter does not allow filtering by time.
      *
-     * @var boolean
+     * @var bool
      */
     protected $time = false;
 }

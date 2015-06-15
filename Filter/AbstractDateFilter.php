@@ -11,11 +11,10 @@
 
 namespace Sonata\PropelAdminBundle\Filter;
 
-use Sonata\AdminBundle\Form\Type\Filter\DateType;
-use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use ModelCriteria;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
+use Sonata\AdminBundle\Form\Type\Filter\DateType;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -23,14 +22,16 @@ use ModelCriteria;
 abstract class AbstractDateFilter extends AbstractFilter
 {
     /**
-     * Flag indicating that filter will have range
-     * @var boolean
+     * Flag indicating that filter will have range.
+     *
+     * @var bool
      */
     protected $range = false;
 
     /**
-     * Flag indicating that filter will filter by datetime instead by date
-     * @var boolean
+     * Flag indicating that filter will filter by datetime instead by date.
+     *
+     * @var bool
      */
     protected $time = false;
 
@@ -118,7 +119,7 @@ abstract class AbstractDateFilter extends AbstractFilter
     public function getDefaultOptions()
     {
         return array(
-            'input_type' => 'datetime'
+            'input_type' => 'datetime',
         );
     }
 
@@ -161,9 +162,9 @@ abstract class AbstractDateFilter extends AbstractFilter
     }
 
     /**
-     * Resolves DataType:: constants to SQL operators
+     * Resolves DataType:: constants to SQL operators.
      *
-     * @param integer $type
+     * @param int $type
      *
      * @return string
      */
@@ -174,5 +175,4 @@ abstract class AbstractDateFilter extends AbstractFilter
 
         return isset($choices[$type]) ? $choices[$type] : ModelCriteria::EQUAL;
     }
-
 }

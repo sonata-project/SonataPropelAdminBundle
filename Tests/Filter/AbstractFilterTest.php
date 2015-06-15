@@ -12,7 +12,7 @@
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
 /**
- * Base class for filter tests
+ * Base class for filter tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -121,7 +121,7 @@ abstract class AbstractFilterTest extends \PHPUnit_Framework_TestCase
                ->will($this->returnValue($fieldName));
 
         $filter->initialize('filter', array(
-            'field_name' => $fieldName
+            'field_name' => $fieldName,
         ));
 
         return $filter;

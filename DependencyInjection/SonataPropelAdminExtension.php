@@ -11,11 +11,11 @@
 
 namespace Sonata\PropelAdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\DependencyInjection\AbstractSonataAdminExtension;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Sonata\AdminBundle\DependencyInjection\AbstractSonataAdminExtension;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -26,7 +26,7 @@ class SonataPropelAdminExtension extends AbstractSonataAdminExtension
     {
         $config = $this->fixTemplatesConfiguration($config, $container);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('propel.xml');
         $loader->load('filter_types.xml');

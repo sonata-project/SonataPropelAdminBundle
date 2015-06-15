@@ -11,13 +11,12 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
+use ModelCriteria;
 use Sonata\AdminBundle\Form\Type\Filter\DateType;
 use Sonata\PropelAdminBundle\Filter\DateFilter;
 
-use \ModelCriteria;
-
 /**
- * DateFilter base tests
+ * DateFilter base tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */

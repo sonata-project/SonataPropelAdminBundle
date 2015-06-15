@@ -18,5 +18,4 @@ use Sonata\AdminBundle\Datagrid\Datagrid as BaseDatagrid;
  */
 class Datagrid extends BaseDatagrid
 {
-
 }

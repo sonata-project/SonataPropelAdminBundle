@@ -11,10 +11,9 @@
 
 namespace Sonata\PropelAdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use ModelCriteria;
 use PropelObjectCollection;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -86,8 +85,8 @@ class ProxyQuery implements ProxyQueryInterface
         $method = 'filterBy';
         $args = array($column, $value, $comparison);
 
-        if (method_exists($this->query, 'filterBy' . ucfirst($column))) {
-            $method = 'filterBy' . ucfirst($column);
+        if (method_exists($this->query, 'filterBy'.ucfirst($column))) {
+            $method = 'filterBy'.ucfirst($column);
             $args = array($value, $comparison);
         }
 

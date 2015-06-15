@@ -11,13 +11,12 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
+use ModelCriteria;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Sonata\PropelAdminBundle\Filter\StringFilter;
 
-use \ModelCriteria;
-
 /**
- * StringFilter tests
+ * StringFilter tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */

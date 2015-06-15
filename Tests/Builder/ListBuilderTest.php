@@ -8,13 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Sonata\PropelAdminBundle\Tests\Builder;
 
-use Sonata\PropelAdminBundle\Builder\ListBuilder;
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
+use Sonata\PropelAdminBundle\Builder\ListBuilder;
 
 /**
- * ListBuilder tests
+ * ListBuilder tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -78,7 +79,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addField($this->list, 'text', $field, $this->admin);
 
         foreach ($expectedOptions as $option => $value) {
-            $this->assertSame($value, $field->getOption($option), 'Testing option ' . $option);
+            $this->assertSame($value, $field->getOption($option), 'Testing option '.$option);
         }
     }
 
@@ -95,29 +96,29 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase
             array(
                 $field,
                 array('sortable' => false),
-                array('sortable' => false, 'sort_field_mapping' => null, 'sort_parent_association_mappings' => null)
+                array('sortable' => false, 'sort_field_mapping' => null, 'sort_parent_association_mappings' => null),
             ),
             // sortable field, sort_field_mapping and sort_parent_association_mappings are updated
             array(
                 $field,
                 array('sortable' => true),
-                array('sortable' => true, 'sort_field_mapping' => null, 'sort_parent_association_mappings' => array())
+                array('sortable' => true, 'sort_field_mapping' => null, 'sort_parent_association_mappings' => array()),
             ),
             array(
                 $field,
                 array('sortable' => true, 'sort_field_mapping' => 'sort_field_mapping value', 'sort_parent_association_mappings' => 'sort_parent_association_mappings value'),
-                array('sortable' => true, 'sort_field_mapping' => 'sort_field_mapping value', 'sort_parent_association_mappings' => 'sort_parent_association_mappings value')
+                array('sortable' => true, 'sort_field_mapping' => 'sort_field_mapping value', 'sort_parent_association_mappings' => 'sort_parent_association_mappings value'),
             ),
             // sort order is always updated
             array(
                 $field,
                 array(),
-                array('_sort_order' => 'ASC') // default value
+                array('_sort_order' => 'ASC'), // default value
             ),
             array(
                 $field,
                 array('_sort_order' => 'DESC'),
-                array('_sort_order' => 'DESC') // given value
+                array('_sort_order' => 'DESC'), // given value
             ),
 
             /****************************
@@ -127,19 +128,19 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase
             array(
                 $field,
                 array(),
-                array('code' => 'my_field')
+                array('code' => 'my_field'),
             ),
             // the default label is the field's name
             array(
                 $field,
                 array(),
-                array('label' => 'my_field')
+                array('label' => 'my_field'),
             ),
             // code and label are updated if given
             array(
                 $field,
                 array('code' => 'super code', 'label' => 'super label'),
-                array('code' => 'super code', 'label' => 'super label')
+                array('code' => 'super code', 'label' => 'super label'),
             ),
         );
     }
