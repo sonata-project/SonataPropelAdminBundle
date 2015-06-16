@@ -11,8 +11,8 @@
 
 namespace Sonata\PropelAdminBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Registers the form themes to use for create/edit and filter forms.

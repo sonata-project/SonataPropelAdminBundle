@@ -11,12 +11,11 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
+use ModelCriteria;
 use Sonata\CoreBundle\Form\Type\BooleanType;
 
-use \ModelCriteria;
-
 /**
- * BooleanFilter tests
+ * BooleanFilter tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */

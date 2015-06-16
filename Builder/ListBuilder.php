@@ -11,11 +11,10 @@
 
 namespace Sonata\PropelAdminBundle\Builder;
 
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Builder\ListBuilderInterface;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>

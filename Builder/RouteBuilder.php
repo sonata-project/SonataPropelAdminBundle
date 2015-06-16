@@ -11,9 +11,8 @@
 
 namespace Sonata\PropelAdminBundle\Builder;
 
-use Sonata\AdminBundle\Builder\RouteBuilderInterface;
-
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**

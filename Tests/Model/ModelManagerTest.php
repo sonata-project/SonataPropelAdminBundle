@@ -15,7 +15,7 @@ use Sonata\PropelAdminBundle\Admin\FieldDescription;
 use Sonata\PropelAdminBundle\Model\ModelManager;
 
 /**
- * ModelManager tests
+ * ModelManager tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -42,13 +42,13 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     public function testCollectionClear()
     {
         $manager = new ModelManager();
-        $object = new \stdClass;
+        $object = new \stdClass();
         $object->foo = 42;
         $collection = new \PropelObjectCollection();
         $collection->append($object);
 
         $this->assertSame(array(
-            $object
+            $object,
         ), $manager->collectionClear($collection));
         $this->assertTrue($collection->isEmpty());
     }
@@ -58,14 +58,14 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new ModelManager();
         $collection = new \PropelObjectCollection();
 
-        $object = new \stdClass;
+        $object = new \stdClass();
         $object->foo = 42;
 
         $this->assertTrue($collection->isEmpty());
 
         $manager->collectionAddElement($collection, $object);
         $this->assertSame(array(
-            $object
+            $object,
         ), $collection->getArrayCopy());
 
         $this->assertCount(1, $collection);
@@ -75,10 +75,10 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     {
         $manager = new ModelManager();
 
-        $object = new \stdClass;
+        $object = new \stdClass();
         $object->foo = 42;
 
-        $otherObject = new \stdClass;
+        $otherObject = new \stdClass();
         $otherObject->bar = 'baz';
 
         $collection = new \PropelObjectCollection();
@@ -92,14 +92,14 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     {
         $manager = new ModelManager();
 
-        $object = new \stdClass;
+        $object = new \stdClass();
         $object->foo = 42;
 
         $collection = new \PropelObjectCollection();
         $collection->append($object);
 
         $this->assertSame(array(
-            $object
+            $object,
         ), $collection->getArrayCopy());
 
         $manager->collectionRemoveElement($collection, $object);
@@ -111,23 +111,23 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
     {
         $manager = new ModelManager();
 
-        $object = new \stdClass;
+        $object = new \stdClass();
         $object->foo = 42;
 
-        $otherObject = new \stdClass;
+        $otherObject = new \stdClass();
         $otherObject->bar = 'baz';
 
         $collection = new \PropelObjectCollection();
         $collection->append($object);
 
         $this->assertSame(array(
-            $object
+            $object,
         ), $collection->getArrayCopy());
 
         $manager->collectionRemoveElement($collection, $otherObject);
 
         $this->assertSame(array(
-            $object
+            $object,
         ), $collection->getArrayCopy());
     }
 
@@ -270,7 +270,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
             array(null),
             array(1),
             array(array()),
-            array(new \stdClass),
+            array(new \stdClass()),
         );
     }
 
@@ -326,7 +326,7 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $bookTableMap->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'author', 'id', true, null, null);
         $dbMap->addTableObject($bookTableMap);
 
-        $bookTableMap->addRelation('Author', 'Acme\\DemoBundle\\Model\\Author', \RelationMap::MANY_TO_ONE, array('AUTHOR_ID' => 'ID', ), 'CASCADE', null);
+        $bookTableMap->addRelation('Author', 'Acme\\DemoBundle\\Model\\Author', \RelationMap::MANY_TO_ONE, array('AUTHOR_ID' => 'ID'), 'CASCADE', null);
 
         $manager = new TestableModelManager();
         $manager->addTable('Acme\\DemoBundle\\Model\\Author', $authorTableMap);
@@ -442,10 +442,10 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $titleSortField->setName('title');
 
         return array(
-            array( $field, array('_sort_by' => $slugSortField, '_sort_order' => 'ASC'), array('_sort_by' => 'slug', '_sort_order' => 'DESC') ),
-            array( $field, array('_sort_by' => $slugSortField, '_sort_order' => 'DESC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC') ),
-            array( $field, array('_sort_by' => $titleSortField, '_sort_order' => 'ASC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC') ),
-            array( $field, array('_sort_by' => $slugSortFieldWithSortable, '_sort_order' => 'DESC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC') ),
+            array($field, array('_sort_by' => $slugSortField, '_sort_order' => 'ASC'), array('_sort_by' => 'slug', '_sort_order' => 'DESC')),
+            array($field, array('_sort_by' => $slugSortField, '_sort_order' => 'DESC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC')),
+            array($field, array('_sort_by' => $titleSortField, '_sort_order' => 'ASC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC')),
+            array($field, array('_sort_by' => $slugSortFieldWithSortable, '_sort_order' => 'DESC'), array('_sort_by' => 'slug', '_sort_order' => 'ASC')),
         );
     }
 

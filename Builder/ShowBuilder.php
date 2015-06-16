@@ -11,11 +11,10 @@
 
 namespace Sonata\PropelAdminBundle\Builder;
 
-use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -27,8 +26,6 @@ class ShowBuilder extends BaseBuilder implements ShowBuilderInterface
      * @param null                                                 $type
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
-     *
-     * @return void
      */
     public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
@@ -48,8 +45,6 @@ class ShowBuilder extends BaseBuilder implements ShowBuilderInterface
     /**
      * @param \Sonata\AdminBundle\Admin\AdminInterface            $admin
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
-     *
-     * @return void
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {

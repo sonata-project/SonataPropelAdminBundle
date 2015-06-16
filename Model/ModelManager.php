@@ -11,18 +11,15 @@
 
 namespace Sonata\PropelAdminBundle\Model;
 
+use BaseObject;
 use Exporter\Source\PropelCollectionSourceIterator;
-
+use Persistent;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
 use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
-
-use BaseObject;
-use Persistent;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -70,21 +67,21 @@ class ModelManager implements ModelManagerInterface
                 if (strtolower($name) === strtolower($relation->getName())) {
                     $fieldDescription->setAssociationMapping(array(
                         'targetEntity'  => $relation->getForeignTable()->getClassName(),
-                        'type'          => $relation->getType()
+                        'type'          => $relation->getType(),
                     ));
                 }
             } elseif ($relation->getType() === \RelationMap::ONE_TO_MANY) {
                 if (strtolower($name) === strtolower($relation->getPluralName())) {
                     $fieldDescription->setAssociationMapping(array(
                         'targetEntity'  => $relation->getForeignTable()->getClassName(),
-                        'type'          => $relation->getType()
+                        'type'          => $relation->getType(),
                     ));
                 }
             } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
                 if (strtolower($name) === strtolower($relation->getPluralName())) {
                     $fieldDescription->setAssociationMapping(array(
                         'targetEntity'  => $relation->getLocalTable()->getClassName(),
-                        'type'          => $relation->getType()
+                        'type'          => $relation->getType(),
                     ));
                 }
             }
@@ -114,7 +111,7 @@ class ModelManager implements ModelManagerInterface
 
         foreach ($nameElements as $nameElement) {
             $parentAssociationMappings[] = array(
-                'fieldName' => $nameElement
+                'fieldName' => $nameElement,
             );
         }
 
@@ -123,8 +120,6 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param BaseObject $object
-     *
-     * @return void
      */
     public function create($object)
     {
@@ -133,8 +128,6 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param BaseObject $object
-     *
-     * @return void
      */
     public function update($object)
     {
@@ -143,8 +136,6 @@ class ModelManager implements ModelManagerInterface
 
     /**
      * @param BaseObject $object
-     *
-     * @return void
      */
     public function delete($object)
     {
@@ -168,8 +159,6 @@ class ModelManager implements ModelManagerInterface
     /**
      * @param $class
      * @param array $criteria
-     *
-     * @return void
      */
     public function findOneBy($class, array $criteria = array())
     {
@@ -197,8 +186,6 @@ class ModelManager implements ModelManagerInterface
     /**
      * @param string                                           $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $queryProxy
-     *
-     * @return void
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
@@ -236,7 +223,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function createQuery($class, $alias = 'o')
     {
-        $queryClass = $class . 'Query';
+        $queryClass = $class.'Query';
 
         return new ProxyQuery($queryClass::create($alias));
     }
@@ -256,11 +243,10 @@ class ModelManager implements ModelManagerInterface
             return $fieldNames[0];
         }
 
-        return null;
+        return;
     }
 
     /**
-     *
      * @param BaseObject|Persistent $model
      *
      * @return array|null
@@ -321,13 +307,13 @@ class ModelManager implements ModelManagerInterface
             $values = $this->getIdentifierValues($model);
 
             if (empty($values)) {
-                return null;
+                return;
             }
 
             return implode(self::ID_SEPARATOR, $values);
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -337,11 +323,10 @@ class ModelManager implements ModelManagerInterface
      */
     public function getModelInstance($class)
     {
-        return new $class;
+        return new $class();
     }
 
     /**
-     *
      * @param string $class
      *
      * @return \PropelObjectCollection
@@ -355,12 +340,10 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * Removes an element from the collection
+     * Removes an element from the collection.
      *
      * @param mixed $collection
      * @param mixed $element
-     *
-     * @return void
      */
     public function collectionRemoveElement(&$collection, &$element)
     {
@@ -371,7 +354,7 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * Add an element from the collection
+     * Add an element from the collection.
      *
      * @param mixed $collection
      * @param mixed $element
@@ -384,12 +367,12 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * Check if the element exists in the collection
+     * Check if the element exists in the collection.
      *
      * @param mixed $collection
      * @param mixed $element
      *
-     * @return boolean
+     * @return bool
      */
     public function collectionHasElement(&$collection, &$element)
     {
@@ -397,7 +380,7 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * Clear the collection
+     * Clear the collection.
      *
      * @param mixed $collection
      *
@@ -409,7 +392,7 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * Returns the parameters used in the columns header
+     * Returns the parameters used in the columns header.
      *
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface $fieldDescription
      * @param \Sonata\AdminBundle\Datagrid\DatagridInterface      $datagrid
@@ -453,8 +436,6 @@ class ModelManager implements ModelManagerInterface
     /**
      * @param string $class
      * @param array  $array
-     *
-     * @return void
      */
     public function modelReverseTransform($class, array $array = array())
     {
@@ -464,8 +445,6 @@ class ModelManager implements ModelManagerInterface
     /**
      * @param string $class
      * @param object $instance
-     *
-     * @return void
      */
     public function modelTransform($class, $instance)
     {
@@ -477,7 +456,7 @@ class ModelManager implements ModelManagerInterface
      */
     public function executeQuery($query)
     {
-        if ($query instanceof ProxyQueryInterface ){
+        if ($query instanceof ProxyQueryInterface) {
             return $query->execute();
         }
 
@@ -489,8 +468,6 @@ class ModelManager implements ModelManagerInterface
      * @param array                                          $fields
      * @param null                                           $firstResult
      * @param null                                           $maxResult
-     *
-     * @return void
      */
     public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null)
     {
@@ -542,8 +519,6 @@ class ModelManager implements ModelManagerInterface
      * @param string                                           $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
      * @param array                                            $idx
-     *
-     * @return void
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx)
     {
@@ -640,7 +615,7 @@ class ModelManager implements ModelManagerInterface
      *
      * @param string $class
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasCompositePk($class)
     {

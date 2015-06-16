@@ -11,13 +11,12 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
+use Criteria;
+use PropelObjectCollection;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
-use \Criteria;
-use \PropelObjectCollection;
-
 /**
- * ModelFilter tests
+ * ModelFilter tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */

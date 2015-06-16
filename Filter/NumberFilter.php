@@ -11,9 +11,8 @@
 
 namespace Sonata\PropelAdminBundle\Filter;
 
-use Sonata\AdminBundle\Form\Type\Filter\NumberType;
-
 use ModelCriteria;
+use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>

@@ -1,3 +1,5 @@
+.php_cs.cache
+
 # composer related
 composer.lock
 composer.phar

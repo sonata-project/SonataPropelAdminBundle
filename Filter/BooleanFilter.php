@@ -11,10 +11,9 @@
 
 namespace Sonata\PropelAdminBundle\Filter;
 
+use ModelCriteria;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\CoreBundle\Form\Type\BooleanType;
-
-use ModelCriteria;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -22,14 +21,12 @@ use ModelCriteria;
 class BooleanFilter extends AbstractFilter
 {
     /**
-     * Apply the filter to the ModelCriteria instance
+     * Apply the filter to the ModelCriteria instance.
      *
      * @param ProxyQueryInterface $query
      * @param string              $alias
      * @param string              $field
      * @param string              $value
-     *
-     * @return void
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {

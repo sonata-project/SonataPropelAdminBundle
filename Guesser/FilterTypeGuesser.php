@@ -12,7 +12,7 @@
 namespace Sonata\PropelAdminBundle\Guesser;
 
 /**
- * Filter type guesser
+ * Filter type guesser.
  */
 class FilterTypeGuesser extends AbstractTypeGuesser
 {

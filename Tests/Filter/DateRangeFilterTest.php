@@ -12,7 +12,7 @@
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
 /**
- * DateRangeFilter tests
+ * DateRangeFilter tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */

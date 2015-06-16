@@ -13,12 +13,11 @@ namespace Sonata\PropelAdminBundle\Guesser;
 
 use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-
 use Symfony\Bridge\Propel1\Form\PropelTypeGuesser;
 use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
- * Base type guesser
+ * Base type guesser.
  */
 abstract class AbstractTypeGuesser implements TypeGuesserInterface
 {

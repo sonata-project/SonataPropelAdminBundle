@@ -15,10 +15,10 @@ use ModelCriteria;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 
 /**
- * Class NumberFilterTest
- * 
- * @package Sonata\PropelAdminBundle\Tests\Filter
+ * Class NumberFilterTest.
+ *
  * @author  Pavel Sidorovich
+ *
  * @since   2014-02-27
  */
 class NumberFilterTest extends AbstractFilterTest

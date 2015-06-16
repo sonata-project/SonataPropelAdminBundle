@@ -11,12 +11,11 @@
 
 namespace Sonata\PropelAdminBundle\Tests\Filter;
 
+use ModelCriteria;
 use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
 
-use \ModelCriteria;
-
 /**
- * DateRangeFilter base tests
+ * DateRangeFilter base tests.
  *
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -145,12 +144,12 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
             array(null, false),
             array('string', false),
             array(42, false),
-            array(array('foo' => 'dummy value'), false),
-            array(array('value' => array('foo' => 'dummy value')), true),
+            array(array('foo'   => 'dummy value'), false),
+            array(array('value' => array('foo'   => 'dummy value')), true),
             array(array('value' => array('start' => 'dummy value')), true),
-            array(array('value' => array('end' => 'dummy value')), true),
+            array(array('value' => array('end'   => 'dummy value')), true),
             array(array('value' => array('start' => null, 'end' => 'dummy value')), true),
-            array(array('value' => array('end' => null, 'start' => 'dummy value')), true),
+            array(array('value' => array('end'   => null, 'start' => 'dummy value')), true),
         );
     }
 
@@ -209,7 +208,7 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
                ->will($this->returnValue($fieldName));
 
         $filter->initialize('filter', array(
-            'field_name' => $fieldName
+            'field_name' => $fieldName,
         ));
 
         return $filter;

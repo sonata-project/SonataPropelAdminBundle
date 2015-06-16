@@ -11,17 +11,14 @@
 
 namespace Sonata\PropelAdminBundle\Builder;
 
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\FilterFactoryInterface;
 use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
-
-use Sonata\PropelAdminBundle\Datagrid\Pager;
 use Sonata\PropelAdminBundle\Datagrid\Datagrid;
-
+use Sonata\PropelAdminBundle\Datagrid\Pager;
 use Symfony\Component\Form\FormFactory;
 
 /**
@@ -45,7 +42,7 @@ class DatagridBuilder implements DatagridBuilderInterface
     protected $guesser;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $csrfTokenEnabled;
 
@@ -53,7 +50,7 @@ class DatagridBuilder implements DatagridBuilderInterface
      * @param \Symfony\Component\Form\FormFactory               $formFactory
      * @param \Sonata\AdminBundle\Filter\FilterFactoryInterface $filterFactory
      * @param \Sonata\AdminBundle\Guesser\TypeGuesserInterface  $guesser
-     * @param boolean                                           $csrfTokenEnabled
+     * @param bool                                              $csrfTokenEnabled
      */
     public function __construct(FormFactory $formFactory, FilterFactoryInterface $filterFactory, TypeGuesserInterface $guesser, $csrfTokenEnabled = true)
     {

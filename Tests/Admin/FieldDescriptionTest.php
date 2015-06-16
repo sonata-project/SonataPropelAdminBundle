@@ -8,21 +8,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Sonata\PropelAdminBundle\Tests\Admin;
 
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
 
 /**
- * FieldDescription tests
+ * FieldDescription tests.
  */
 class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
 {
     public function testAssociationMapping()
     {
-        $field = new FieldDescription;
+        $field = new FieldDescription();
         $field->setAssociationMapping(array(
-            'type' => 'integer',
-            'fieldName' => 'position'
+            'type'      => 'integer',
+            'fieldName' => 'position',
         ));
 
         $this->assertEquals('integer', $field->getType());
@@ -30,8 +31,8 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
         // cannot overwrite defined definition
         $field->setAssociationMapping(array(
-            'type' => 'overwrite?',
-            'fieldName' => 'overwritten'
+            'type'      => 'overwrite?',
+            'fieldName' => 'overwritten',
         ));
 
         $this->assertEquals('integer', $field->getType());
@@ -106,7 +107,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
     {
         $assocationMapping = array(
             'type'         => 'integer',
-            'targetEntity' => 'someValue'
+            'targetEntity' => 'someValue',
         );
 
         $field = new FieldDescription();
@@ -151,7 +152,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $fieldMapping = array(
             'type'      => 'integer',
             'fieldName' => 'position',
-            'id'        => 'someId'
+            'id'        => 'someId',
         );
 
         $field = new FieldDescription();

@@ -11,13 +11,11 @@
 
 namespace Sonata\PropelAdminBundle\Filter;
 
+use ModelCriteria;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Filter;
-use Sonata\PropelAdminBundle\Model\ModelManager;
-
 use Sonata\PropelAdminBundle\Datagrid\ProxyQuery;
-
-use ModelCriteria;
+use Sonata\PropelAdminBundle\Model\ModelManager;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -32,14 +30,12 @@ abstract class AbstractFilter extends Filter
     }
 
     /**
-     * Apply the filter to the ModelCriteria instance
+     * Apply the filter to the ModelCriteria instance.
      *
      * @param ProxyQueryInterface $query
      * @param string              $alias
      * @param string              $field
      * @param string              $value
-     *
-     * @return void
      */
     public function filter(ProxyQueryInterface $query, $alias, $field, $value)
     {
