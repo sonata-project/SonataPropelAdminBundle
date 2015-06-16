@@ -13,7 +13,8 @@ namespace Sonata\PropelAdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
-use ModelCriteria;
+//use ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use PropelObjectCollection;
 
 /**
