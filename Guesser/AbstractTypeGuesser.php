@@ -22,7 +22,7 @@ use Symfony\Component\Form\Guess\TypeGuess;
 abstract class AbstractTypeGuesser implements TypeGuesserInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessType($class, $property, ModelManagerInterface $modelManager)
     {
