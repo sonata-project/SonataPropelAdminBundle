@@ -12,7 +12,7 @@ you can simply use the ``ModelType`` as you would do on any ``Form``.
 
     namespace Acme\Bundle\LibraryBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 

@@ -130,6 +130,6 @@ class DatagridBuilder implements DatagridBuilderInterface
 
         $formBuilder = $this->formFactory->createNamedBuilder('filter', 'form', array(), $defaultOptions);
 
-        return new Datagrid($admin->createQuery('list'), $admin->getList(), $pager, $formBuilder, $values);
+        return new Datagrid($admin->createQuery(), $admin->getList(), $pager, $formBuilder, $values);
     }
 }

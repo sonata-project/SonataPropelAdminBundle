@@ -11,7 +11,7 @@
 
 namespace Sonata\PropelAdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin as BaseAdmin;
+use Sonata\AdminBundle\Admin\AbstractAdmin as BaseAdmin;
 
 abstract class Admin extends BaseAdmin
 {
