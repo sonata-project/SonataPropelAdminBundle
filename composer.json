@@ -42,5 +42,8 @@
     "autoload-dev": {
         "psr-4": { "Sonata\\PropelAdminBundle\\Tests\\": "Tests/" }
     },
+    "config": {
+        "sort-packages": true
+    },
     "target-dir": "Sonata/PropelAdminBundle"
 }
