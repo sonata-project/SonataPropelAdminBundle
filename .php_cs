@@ -2,6 +2,8 @@
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->in(array(__DIR__))
+    ->exclude('om')
+    ->exclude('map')
 ;
 
 return Symfony\CS\Config\Config::create()
