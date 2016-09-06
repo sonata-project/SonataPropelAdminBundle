@@ -28,7 +28,7 @@ class AddGuesserCompilerPass implements CompilerPassInterface
 
         // ListBuilder
         $definition = $container->getDefinition('sonata.admin.guesser.propel_list_chain');
-        $services   = array();
+        $services = array();
         foreach ($container->findTaggedServiceIds('sonata.admin.guesser.propel_list') as $id => $attributes) {
             $services[] = new Reference($id);
         }
@@ -37,7 +37,7 @@ class AddGuesserCompilerPass implements CompilerPassInterface
 
         // DatagridBuilder
         $definition = $container->getDefinition('sonata.admin.guesser.propel_datagrid_chain');
-        $services   = array();
+        $services = array();
         foreach ($container->findTaggedServiceIds('sonata.admin.guesser.propel_datagrid') as $id => $attributes) {
             $services[] = new Reference($id);
         }
@@ -46,7 +46,7 @@ class AddGuesserCompilerPass implements CompilerPassInterface
 
         // ShowBuilder
         $definition = $container->getDefinition('sonata.admin.guesser.propel_show_chain');
-        $services   = array();
+        $services = array();
         foreach ($container->findTaggedServiceIds('sonata.admin.guesser.propel_show') as $id => $attributes) {
             $services[] = new Reference($id);
         }

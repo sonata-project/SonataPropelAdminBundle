@@ -36,7 +36,7 @@ class Pager extends BasePager
     /**
      * Initialize the Pager.
      *
-     * @todo Add handling of parameters, if given.
+     * @todo Add handling of parameters, if given
      */
     public function init()
     {

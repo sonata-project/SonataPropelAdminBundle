@@ -74,9 +74,9 @@ class ProxyQuery implements ProxyQueryInterface
      * Calls the filterBy{Column}() method if it exists or fallbacks to
      * ModelCriteria's filterBy() otherwise.
      *
-     * @param string $column     The column on which we apply a filter (must be its phpName).
-     * @param mixed  $value      The value to filter by.
-     * @param string $comparison The comparison operator.
+     * @param string $column     The column on which we apply a filter (must be its phpName)
+     * @param mixed  $value      The value to filter by
+     * @param string $comparison The comparison operator
      *
      * @return ProxyQuery
      */

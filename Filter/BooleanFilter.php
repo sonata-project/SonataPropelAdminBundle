@@ -45,9 +45,9 @@ class BooleanFilter extends AbstractFilter
     public function getRenderSettings()
     {
         return array('sonata_type_filter_default', array(
-            'field_type'        => $this->getFieldType(),
-            'field_options'     => $this->getFieldOptions(),
-            'label'             => $this->getLabel(),
+            'field_type'    => $this->getFieldType(),
+            'field_options' => $this->getFieldOptions(),
+            'label'         => $this->getLabel(),
         ));
     }
 
@@ -62,8 +62,8 @@ class BooleanFilter extends AbstractFilter
     protected function getCriteriaMap()
     {
         return array(
-            BooleanType::TYPE_YES  => ModelCriteria::EQUAL,
-            BooleanType::TYPE_NO   => ModelCriteria::NOT_EQUAL,
+            BooleanType::TYPE_YES => ModelCriteria::EQUAL,
+            BooleanType::TYPE_NO  => ModelCriteria::NOT_EQUAL,
         );
     }
 }

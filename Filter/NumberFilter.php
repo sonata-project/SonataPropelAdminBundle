@@ -34,11 +34,11 @@ class NumberFilter extends AbstractFilter
     protected function getCriteriaMap()
     {
         return array(
-            NumberType::TYPE_GREATER_EQUAL  => ModelCriteria::GREATER_EQUAL,
-            NumberType::TYPE_GREATER_THAN   => ModelCriteria::GREATER_THAN,
-            NumberType::TYPE_EQUAL          => ModelCriteria::EQUAL,
-            NumberType::TYPE_LESS_EQUAL     => ModelCriteria::LESS_EQUAL,
-            NumberType::TYPE_LESS_THAN      => ModelCriteria::LESS_THAN,
+            NumberType::TYPE_GREATER_EQUAL => ModelCriteria::GREATER_EQUAL,
+            NumberType::TYPE_GREATER_THAN  => ModelCriteria::GREATER_THAN,
+            NumberType::TYPE_EQUAL         => ModelCriteria::EQUAL,
+            NumberType::TYPE_LESS_EQUAL    => ModelCriteria::LESS_EQUAL,
+            NumberType::TYPE_LESS_THAN     => ModelCriteria::LESS_THAN,
         );
     }
 }

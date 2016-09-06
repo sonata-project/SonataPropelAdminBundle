@@ -63,9 +63,9 @@ class StringFilter extends AbstractFilter
     protected function getCriteriaMap()
     {
         return array(
-            ChoiceType::TYPE_CONTAINS       => ModelCriteria::LIKE,
-            ChoiceType::TYPE_NOT_CONTAINS   => ModelCriteria::NOT_LIKE,
-            ChoiceType::TYPE_EQUAL          => ModelCriteria::EQUAL,
+            ChoiceType::TYPE_CONTAINS     => ModelCriteria::LIKE,
+            ChoiceType::TYPE_NOT_CONTAINS => ModelCriteria::NOT_LIKE,
+            ChoiceType::TYPE_EQUAL        => ModelCriteria::EQUAL,
         );
     }
 }

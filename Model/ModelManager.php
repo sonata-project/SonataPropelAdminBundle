@@ -40,9 +40,9 @@ class ModelManager implements ModelManagerInterface
      * * the respective Peer-class and
      * * the TableMap of the model class.
      *
-     * @param string $class   The FQCN of the model.
-     * @param string $name    The column name of the model (should be given as a phpName).
-     * @param array  $options A list of options to be passed to the new FielDescription.
+     * @param string $class   The FQCN of the model
+     * @param string $name    The column name of the model (should be given as a phpName)
+     * @param array  $options A list of options to be passed to the new FielDescription
      *
      * @return FieldDescription
      */
@@ -66,22 +66,22 @@ class ModelManager implements ModelManagerInterface
             if ($relation->getType() === \RelationMap::MANY_TO_ONE) {
                 if (strtolower($name) === strtolower($relation->getName())) {
                     $fieldDescription->setAssociationMapping(array(
-                        'targetEntity'  => $relation->getForeignTable()->getClassName(),
-                        'type'          => $relation->getType(),
+                        'targetEntity' => $relation->getForeignTable()->getClassName(),
+                        'type'         => $relation->getType(),
                     ));
                 }
             } elseif ($relation->getType() === \RelationMap::ONE_TO_MANY) {
                 if (strtolower($name) === strtolower($relation->getPluralName())) {
                     $fieldDescription->setAssociationMapping(array(
-                        'targetEntity'  => $relation->getForeignTable()->getClassName(),
-                        'type'          => $relation->getType(),
+                        'targetEntity' => $relation->getForeignTable()->getClassName(),
+                        'type'         => $relation->getType(),
                     ));
                 }
             } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
                 if (strtolower($name) === strtolower($relation->getPluralName())) {
                     $fieldDescription->setAssociationMapping(array(
-                        'targetEntity'  => $relation->getLocalTable()->getClassName(),
-                        'type'          => $relation->getType(),
+                        'targetEntity' => $relation->getLocalTable()->getClassName(),
+                        'type'         => $relation->getType(),
                     ));
                 }
             }
@@ -229,7 +229,7 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @todo Add handling of multi-column primary keys.
+     * @todo Add handling of multi-column primary keys
      *
      * @param string $class
      *
@@ -275,9 +275,9 @@ class ModelManager implements ModelManagerInterface
      * * any single-column unique index
      * * any auto_increment column
      *
-     * @todo Add retrieving of described identifiers other than simple PK.
+     * @todo Add retrieving of described identifiers other than simple PK
      *
-     * @param string $class The FQCN of the model.
+     * @param string $class The FQCN of the model
      *
      * @return string[]
      */
@@ -413,7 +413,7 @@ class ModelManager implements ModelManagerInterface
             $values['_sort_order'] = 'ASC';
         }
 
-        $values['_sort_by'] = is_string($fieldDescription->getOption('sortable')) ? $fieldDescription->getOption('sortable') :  $fieldDescription->getName();
+        $values['_sort_by'] = is_string($fieldDescription->getOption('sortable')) ? $fieldDescription->getOption('sortable') : $fieldDescription->getName();
 
         return array('filter' => $values);
     }
@@ -426,10 +426,10 @@ class ModelManager implements ModelManagerInterface
     public function getDefaultSortValues($class)
     {
         return array(
-            '_sort_order'   => 'ASC',
+            '_sort_order' => 'ASC',
             // @note: _sort_by is a string as we do not handle multiple PK yet
-            '_sort_by'      => $this->getModelIdentifier($class),
-            '_page'         => 1,
+            '_sort_by' => $this->getModelIdentifier($class),
+            '_page'    => 1,
         );
     }
 
@@ -513,8 +513,8 @@ class ModelManager implements ModelManagerInterface
     }
 
     /**
-     * @todo Add support for related classes.
-     * @todo Add support for multi-column primary key.
+     * @todo Add support for related classes
+     * @todo Add support for multi-column primary key
      *
      * @param string                                           $class
      * @param \Sonata\AdminBundle\Datagrid\ProxyQueryInterface $query
@@ -541,8 +541,8 @@ class ModelManager implements ModelManagerInterface
     /**
      * Translates a field name to its phpName equivalent.
      *
-     * @param string $class     The FQCN of the model.
-     * @param string $fieldName The field name to translate.
+     * @param string $class     The FQCN of the model
+     * @param string $fieldName The field name to translate
      *
      * @return string
      */

@@ -144,12 +144,12 @@ abstract class AbstractDateRangeFilterTest extends \PHPUnit_Framework_TestCase
             array(null, false),
             array('string', false),
             array(42, false),
-            array(array('foo'   => 'dummy value'), false),
-            array(array('value' => array('foo'   => 'dummy value')), true),
+            array(array('foo' => 'dummy value'), false),
+            array(array('value' => array('foo' => 'dummy value')), true),
             array(array('value' => array('start' => 'dummy value')), true),
-            array(array('value' => array('end'   => 'dummy value')), true),
+            array(array('value' => array('end' => 'dummy value')), true),
             array(array('value' => array('start' => null, 'end' => 'dummy value')), true),
-            array(array('value' => array('end'   => null, 'start' => 'dummy value')), true),
+            array(array('value' => array('end' => null, 'start' => 'dummy value')), true),
         );
     }
 

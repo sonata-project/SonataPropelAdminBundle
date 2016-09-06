@@ -27,7 +27,7 @@ class ListBuilder extends BaseBuilder implements ListBuilderInterface
      * @param \Sonata\AdminBundle\Admin\FieldDescriptionInterface  $fieldDescription
      * @param \Sonata\AdminBundle\Admin\AdminInterface             $admin
      */
-    public function addField(FieldDescriptionCollection $list, $type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
+    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
         $this->buildField($type, $fieldDescription, $admin);
         $admin->addListFieldDescription($fieldDescription->getName(), $fieldDescription);
@@ -70,7 +70,7 @@ class ListBuilder extends BaseBuilder implements ListBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildField($type = null, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
+    public function buildField($type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin)
     {
         if ($type == null) {
             $guessType = $this->guesser->guessType($admin->getClass(), $fieldDescription->getName(), $admin->getModelManager());

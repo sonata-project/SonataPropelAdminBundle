@@ -77,7 +77,7 @@ abstract class AbstractDateFilter extends AbstractFilter
         }
 
         // default type for range filter
-        $data['type'] = !isset($data['type']) || !is_numeric($data['type']) ?  DateRangeType::TYPE_BETWEEN : $data['type'];
+        $data['type'] = !isset($data['type']) || !is_numeric($data['type']) ? DateRangeType::TYPE_BETWEEN : $data['type'];
 
         if ($data['type'] === DateRangeType::TYPE_NOT_BETWEEN) {
             $query
@@ -151,13 +151,13 @@ abstract class AbstractDateFilter extends AbstractFilter
     protected function getCriteriaMap()
     {
         return array(
-            DateType::TYPE_EQUAL            => ModelCriteria::EQUAL,
-            DateType::TYPE_GREATER_EQUAL    => ModelCriteria::GREATER_EQUAL,
-            DateType::TYPE_GREATER_THAN     => ModelCriteria::GREATER_THAN,
-            DateType::TYPE_LESS_EQUAL       => ModelCriteria::LESS_EQUAL,
-            DateType::TYPE_LESS_THAN        => ModelCriteria::LESS_THAN,
-            DateType::TYPE_NULL             => ModelCriteria::ISNULL,
-            DateType::TYPE_NOT_NULL         => ModelCriteria::ISNOTNULL,
+            DateType::TYPE_EQUAL         => ModelCriteria::EQUAL,
+            DateType::TYPE_GREATER_EQUAL => ModelCriteria::GREATER_EQUAL,
+            DateType::TYPE_GREATER_THAN  => ModelCriteria::GREATER_THAN,
+            DateType::TYPE_LESS_EQUAL    => ModelCriteria::LESS_EQUAL,
+            DateType::TYPE_LESS_THAN     => ModelCriteria::LESS_THAN,
+            DateType::TYPE_NULL          => ModelCriteria::ISNULL,
+            DateType::TYPE_NOT_NULL      => ModelCriteria::ISNOTNULL,
         );
     }
 

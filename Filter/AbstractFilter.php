@@ -104,7 +104,7 @@ abstract class AbstractFilter extends Filter
      * Translates the field name to its phpName equivalent.
      *
      * @param ProxyQueryInterface $query
-     * @param string              $fieldName The field name to translate.
+     * @param string              $fieldName The field name to translate
      *
      * @return string
      */

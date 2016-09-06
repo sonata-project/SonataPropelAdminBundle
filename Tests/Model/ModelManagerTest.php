@@ -405,9 +405,9 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
         $manager->modelIdentifier = 'Id';
 
         $this->assertSame(array(
-            '_sort_order'   => 'ASC',
-            '_sort_by'      => 'Id',
-            '_page'         => 1,
+            '_sort_order' => 'ASC',
+            '_sort_by'    => 'Id',
+            '_page'       => 1,
         ), $manager->getDefaultSortValues('foo'));
     }
 
@@ -464,8 +464,8 @@ class ModelManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(
             'filter' => array(
-                '_sort_by'  => 'slug',
-                '_page'     => 42,
+                '_sort_by' => 'slug',
+                '_page'    => 42,
             ),
         ), $manager->getPaginationParameters($datagrid, 42));
     }

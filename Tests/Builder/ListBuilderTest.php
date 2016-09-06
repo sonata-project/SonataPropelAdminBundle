@@ -52,8 +52,8 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase
     public function addFieldFixesTemplateProvider()
     {
         $templatesMap = array(
-            'text'      => 'textTemplate.html.twig',
-            'integer'   => 'integerTemplate.html.twig',
+            'text'    => 'textTemplate.html.twig',
+            'integer' => 'integerTemplate.html.twig',
         );
 
         // configure the fields descriptions

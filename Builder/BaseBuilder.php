@@ -35,7 +35,7 @@ abstract class BaseBuilder
      */
     public function __construct(TypeGuesserInterface $guesser, array $templates = array())
     {
-        $this->guesser   = $guesser;
+        $this->guesser = $guesser;
         $this->templates = $templates;
     }
 

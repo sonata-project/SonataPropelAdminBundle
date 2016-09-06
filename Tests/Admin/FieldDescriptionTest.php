@@ -82,7 +82,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
     public function testSetFieldMappingSetType()
     {
         $fieldMapping = array(
-            'type'         => 'integer',
+            'type' => 'integer',
         );
 
         $field = new FieldDescription();
@@ -94,7 +94,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
     public function testSetFieldMappingSetMappingType()
     {
         $fieldMapping = array(
-            'type'         => 'integer',
+            'type' => 'integer',
         );
 
         $field = new FieldDescription();

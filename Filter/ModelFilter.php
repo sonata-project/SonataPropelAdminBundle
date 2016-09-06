@@ -50,9 +50,9 @@ class ModelFilter extends AbstractFilter
     protected function getCriteriaMap()
     {
         return array(
-            ChoiceType::TYPE_CONTAINS       => Criteria::IN,
-            ChoiceType::TYPE_NOT_CONTAINS   => Criteria::NOT_IN,
-            ChoiceType::TYPE_EQUAL          => Criteria::EQUAL,
+            ChoiceType::TYPE_CONTAINS     => Criteria::IN,
+            ChoiceType::TYPE_NOT_CONTAINS => Criteria::NOT_IN,
+            ChoiceType::TYPE_EQUAL        => Criteria::EQUAL,
         );
     }
 
