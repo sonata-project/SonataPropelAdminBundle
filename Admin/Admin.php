@@ -11,9 +11,9 @@
 
 namespace Sonata\PropelAdminBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin as BaseAdmin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-abstract class Admin extends BaseAdmin
+abstract class Admin extends AbstractAdmin
 {
     /**
      * Returns the baseRoutePattern used to generate the routing information.

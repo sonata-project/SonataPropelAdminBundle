@@ -2,12 +2,12 @@
 
 namespace Sonata\TestBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class BlogPostAdmin extends Admin
+class BlogPostAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {

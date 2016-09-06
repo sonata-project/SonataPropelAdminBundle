@@ -12,20 +12,20 @@ you can simply use the ``ModelType`` as you would do on any ``Form``.
 
     namespace Acme\Bundle\LibraryBundle\Admin;
 
-    use Sonata\AdminBundle\Admin\AbstractAdmin as Admin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class Book extends Admin
+    class Book extends AbstractAdmin
     {
         protected $baseRouteName = 'acme_library_book_admin';
 
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('author', 'model', array(
+                ->add('author', 'model', [
                     'class' => 'Acme\Bundle\LibraryBundle\Author',
-                ), array())
+                ], [])
             ;
         }
 
@@ -33,9 +33,9 @@ you can simply use the ``ModelType`` as you would do on any ``Form``.
         {
             $datagridMapper
                 ->add('id')
-                ->add('author_id', 'propel_model', array(), null, array(
+                ->add('author_id', 'propel_model', [], null, [
                     'class' => 'Acme\Bundle\LibraryBundle\Author',
-                ))
+                ])
             ;
         }
     }
