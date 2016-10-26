@@ -1,9 +1,9 @@
-.php_cs.cache
-
-# composer related
+/build
+/Resources/doc/_build
+/vendor
 composer.lock
-composer.phar
-vendor
+phpunit.xml
+.php_cs.cache
 
 # propel-generated stuff
 Tests/Fixtures/App/app/propel/sql/
