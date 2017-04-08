@@ -41,7 +41,7 @@ class ListBuilder extends BaseBuilder implements ListBuilderInterface
      */
     public function fixFieldDescription(AdminInterface $admin, FieldDescriptionInterface $fieldDescription)
     {
-        if ($fieldDescription->getName() === '_action') {
+        if ($fieldDescription->getName() === '_action' || $fieldDescription->getType() === 'actions') {
             $this->buildActionFieldDescription($fieldDescription);
         }
 
@@ -94,7 +94,7 @@ class ListBuilder extends BaseBuilder implements ListBuilderInterface
         }
 
         if (null === $fieldDescription->getType()) {
-            $fieldDescription->setType('action');
+            $fieldDescription->setType('actions');
         }
 
         if (null === $fieldDescription->getOption('name')) {
