@@ -13,6 +13,8 @@ namespace Sonata\PropelAdminBundle\Tests\Builder;
 
 use Sonata\PropelAdminBundle\Admin\FieldDescription;
 use Sonata\PropelAdminBundle\Builder\ListBuilder;
+use Symfony\Component\Form\Guess\Guess;
+use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
  * ListBuilder tests.
@@ -24,6 +26,7 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase
     protected $admin;
     protected $typeGuesser;
     protected $list;
+    protected $modelManager;
 
     public function setUp()
     {
@@ -35,6 +38,9 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase
 
         // configure the fields list
         $this->list = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionCollection');
+
+        // configure the model manager
+        $this->modelManager = $this->getMock('Sonata\PropelAdminBundle\Model\ModelManager');
     }
 
     /**
@@ -164,5 +170,40 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase
             'show' => array('template' => 'SonataAdminBundle:CRUD:list__action_show.html.twig'),
             'edit' => array('template' => 'SonataAdminBundle:CRUD:list__action_edit.html.twig'),
         ), $field->getOption('actions'));
+    }
+
+    public function testAddListActionField()
+    {
+        $builder = new ListBuilder($this->typeGuesser);
+        $fieldDescription = new FieldDescription();
+        $fieldDescription->setName('foo');
+        $list = $builder->getBaseList();
+        $builder->addField($list, 'actions', $fieldDescription, $this->admin);
+
+        $this->assertSame(
+            'SonataAdminBundle:CRUD:list__action.html.twig',
+            $list->get('foo')->getTemplate(),
+            'Custom list action field has a default list action template assigned'
+        );
+    }
+
+    public function testCorrectFixedActionsFieldType()
+    {
+        $this->typeGuesser->expects($this->once())->method('guessType')
+            ->willReturn(new TypeGuess(null, array(), Guess::LOW_CONFIDENCE));
+        $this->admin->expects($this->atLeastOnce())->method('getModelManager')
+            ->willReturn($this->modelManager);
+
+        $builder = new ListBuilder($this->typeGuesser);
+        $fieldDescription = new FieldDescription();
+        $fieldDescription->setName('_action');
+        $list = $builder->getBaseList();
+        $builder->addField($list, null, $fieldDescription, $this->admin);
+
+        $this->assertSame(
+            'actions',
+            $list->get('_action')->getType(),
+            'Standard list _action field has "actions" type'
+        );
     }
 }
